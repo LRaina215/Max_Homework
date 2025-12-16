@@ -54,12 +54,13 @@
         .content { position: relative; z-index: 10; width: 100%; max-width: 1200px; margin: 0 auto; opacity: 0; transition: opacity 1s; }
 
         .section { min-height: 85vh; padding: 80px 20px; display: flex; flex-direction: column; justify-content: center; position: relative; }
-        .hero { min-height: 100vh; justify-content: center; }
+        .hero { min-height: 100vh; justify-content: flex-end; padding-bottom: 100px; } /* 让文字稍微靠下，留出中间给头像 */
         
         h1 { font-size: clamp(3rem, 8vw, 6rem); margin: 0; line-height: 1; color: #fff; text-shadow: 0 0 20px rgba(255, 42, 42, 0.5); }
         h1 span { color: var(--primary-red); }
         .hero-desc { margin-top: 30px; font-size: 1.2rem; border-left: 4px solid var(--gold); padding-left: 15px; color: #fff; max-width: 700px; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 0 10px 10px 0; }
 
+        /* 理论卡片 */
         .theory-card { 
             background: var(--glass); border: 1px solid rgba(255, 42, 42, 0.3); 
             padding: 30px; border-radius: 8px; position: relative;
@@ -70,7 +71,7 @@
         .theory-card h2 { color: var(--gold); margin-top: 0; font-size: 1.8rem; }
         .highlight { color: var(--primary-red); font-weight: bold; background: rgba(255, 42, 42, 0.1); padding: 0 4px; }
 
-        /* === AI 聊天 & 技术面板 === */
+        /* AI Chat */
         .chat-container { width: 100%; height: 500px; background: rgba(0, 0, 0, 0.85); border: 1px solid var(--primary-red); border-radius: 10px 10px 0 0; display: flex; flex-direction: column; box-shadow: 0 0 50px rgba(255, 42, 42, 0.15); overflow: hidden; }
         .chat-header { padding: 15px 20px; background: rgba(255, 42, 42, 0.15); border-bottom: 1px solid var(--primary-red); display: flex; justify-content: space-between; align-items: center; }
         .chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
@@ -81,30 +82,20 @@
         input[type="text"] { flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 15px; border-radius: 4px; }
         button { background: var(--primary-red); color: #fff; border: none; padding: 0 30px; cursor: pointer; font-weight: bold; border-radius: 4px; }
 
-        /* 新增：技术展示面板 (Tech Panel) */
+        /* Tech Panel */
         .tech-panel {
-            background: #000;
-            border: 1px dashed #555;
-            border-top: none;
-            padding: 15px;
-            font-size: 0.8rem;
-            color: #888;
-            font-family: 'Consolas', monospace;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            border-radius: 0 0 10px 10px;
+            background: #000; border: 1px dashed #555; border-top: none; padding: 15px;
+            font-size: 0.8rem; color: #888; font-family: 'Consolas', monospace;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border-radius: 0 0 10px 10px;
         }
         .tech-item { display: flex; align-items: center; }
         .tech-label { color: var(--gold); margin-right: 10px; font-weight: bold; }
         .tech-value { color: var(--code-green); }
-
         @media (max-width: 600px) { .tech-panel { grid-template-columns: 1fr; } }
 
-        /* === 原创展示区 === */
+        /* 原创展示区 */
         .showcase-container { display: flex; gap: 30px; height: 600px; }
         .poster-box { flex: 1; background: #111; border: 2px solid #333; border-radius: 8px; overflow: hidden; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.8); transition: 0.3s; }
-        .poster-box:hover { border-color: var(--gold); box-shadow: 0 0 30px rgba(255, 215, 0, 0.2); }
         .poster-box img { width: 100%; height: 100%; object-fit: contain; background: #000; }
         .poster-label { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.8); color: #fff; text-align: center; padding: 10px; font-size: 0.9rem; border-top: 1px solid var(--primary-red); }
         .lyrics-box { flex: 1; background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(255, 42, 42, 0.3); border-radius: 8px; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; backdrop-filter: blur(10px); }
@@ -141,21 +132,23 @@
         <button class="fix-btn" onclick="forceShowContent()">⚠️ 内容没显示？点我修复</button>
     </nav>
 
+    <!-- 3D 粒子容器 -->
     <div id="canvas-container"></div>
 
     <div class="content" id="main-content">
         
+        <!-- Hero: 粒子头像展示区 -->
         <div class="section hero">
             <h1>CYBER <br><span>MARX</span></h1>
             <div class="hero-desc"><p id="typewriter"></p></div>
-            <div style="margin-top: 50px; opacity: 0.6; font-size: 0.9rem;">↓ 向下滚动</div>
+            <div style="margin-top: 50px; opacity: 0.6; font-size: 0.9rem;">↓ 移动鼠标改变视角 | 向下滚动</div>
         </div>
 
         <div class="section scroll-reveal">
             <div class="theory-card">
                 <h2>01 / 数字公有制</h2>
                 <h3>从《资本论》到 Open Source</h3>
-                <p>在工业时代，马克思批判了<span class="highlight">生产资料的私有制</span>。而在今天的数字世界，代码成为了新的生产资料。<br><br>**开源软件运动 (Open Source)** 是一场未经宣扬的共产主义实践。GitHub 上的开源仓库，实际上构建了一个<span class="highlight">数字公有地 (Digital Commons)</span>，它打破了知识产权对技术的垄断。</p>
+                <p>在工业时代，马克思批判了<span class="highlight">生产资料的私有制</span>。而在今天的数字世界，代码成为了新的生产资料。<br><br>**开源软件运动 (Open Source)** 是一场未经宣扬的共产主义实践。GitHub 上的开源仓库，实际上构建了一个<span class="highlight">数字公有地 (Digital Commons)</span>。</p>
             </div>
         </div>
 
@@ -167,7 +160,7 @@
             </div>
         </div>
 
-        <!-- AI Chat 区域 -->
+        <!-- AI Chat -->
         <div class="section scroll-reveal chat-section">
             <h2 style="margin-bottom: 30px; color: #fff; font-size: 2rem;"><span style="color:var(--primary-red)">//</span> 跨时空连线：Ask Marx</h2>
             <div class="chat-container">
@@ -184,30 +177,15 @@
                 </div>
             </div>
             
-            <!-- ✨ 新增：技术展示面板 ✨ -->
             <div class="tech-panel">
-                <div class="tech-item">
-                    <span class="tech-label">>> 核心模型:</span>
-                    <span class="tech-value">DeepSeek-V3 (671B MoE)</span>
-                </div>
-                <div class="tech-item">
-                    <span class="tech-label">>> 角色微调:</span>
-                    <span class="tech-value">Prompt Engineering (唯物史观库)</span>
-                </div>
-                <div class="tech-item">
-                    <span class="tech-label">>> 后端架构:</span>
-                    <span class="tech-value">Vercel Serverless (Node.js)</span>
-                </div>
-                <div class="tech-item">
-                    <span class="tech-label">>> 跨域方案:</span>
-                    <span class="tech-value">API Proxy Forwarding</span>
-                </div>
+                <div class="tech-item"><span class="tech-label">>> 核心模型:</span><span class="tech-value">DeepSeek-V3 (671B MoE)</span></div>
+                <div class="tech-item"><span class="tech-label">>> 角色微调:</span><span class="tech-value">Prompt Engineering (唯物史观库)</span></div>
+                <div class="tech-item"><span class="tech-label">>> 渲染技术:</span><span class="tech-value">WebGL Particle Reconstruction</span></div>
+                <div class="tech-item"><span class="tech-label">>> 跨域方案:</span><span class="tech-value">API Proxy Forwarding</span></div>
             </div>
-            <!-- 技术展示面板结束 -->
-            
         </div>
 
-        <!-- 原创成果展示 -->
+        <!-- 原创成果 -->
         <div class="section scroll-reveal" style="min-height: auto;">
             <h2 style="margin-bottom: 30px; color: #fff; font-size: 2rem; border-left: 5px solid var(--gold); padding-left: 20px;">
                 <span style="color:var(--gold)">//</span> 团队原创成果展示
@@ -220,48 +198,16 @@
                 <div class="lyrics-box">
                     <div class="lyrics-title">🎵 原创歌曲：《破晓的钟声》</div>
                     <div class="lyrics-content">
-<span class="section-tag">[Intro]</span>
-(温暖的钢琴独奏，像晨光洒下) (弦乐慢慢升起)
-
-<span class="section-tag">[Verse 1]</span>
-翻开了 这一页 泛黄的纸张 却依然滚烫
-特里尔的风 吹散了迷雾 指引我方向
-我看过 太多 迷茫的脸庞 在十字路口 失去了主张
-
-<span class="section-tag">[Verse 2]</span>
-直到我遇见你 写下的诗行 像一道雷电 划破了屏障
-你说 这世界 不仅仅是想象 要用手 去改变它 原本的模样
-
-<span class="section-tag">[Pre-Chorus]</span>
-不是高高在上 冰冷的雕像 而是跟我一样 热血的胸膛
-
 <span class="section-tag">[Chorus]</span>
 你是 我心中 破晓的钟声 唤醒了 沉睡 那个梦
 你让 我看懂 平凡的英雄 也拥有 撼动世界 的光荣
 穿越过 百年时空的裂缝 你依然年轻 依然让我们 感动
-
-<span class="section-tag">[Interlude]</span>
-(电吉他 Solo，温暖且充满力量)
-
-<span class="section-tag">[Verse 3]</span>
-我们正 走在你 铺开的路上 每一步脚印 都写满倔强
-真理的味道 也许会苦涩 但回味悠长 能滋养生长
-
-<span class="section-tag">[Chorus]</span>
-你是 我心中 破晓的钟声 唤醒了 沉睡 那个梦
-你让 我看懂 平凡的英雄 也拥有 撼动世界 的光荣
-穿越过 百年时空的裂缝 你依然年轻 依然让我们 感动
-
 <span class="section-tag">[Bridge]</span>
 薪火在传递 从你的手里 交到了 我们的手里...
 (鼓点渐强滚奏) 生生！不息！
-
-<span class="section-tag">[Chorus - Final]</span>
-你是 我心中 不灭的火种 点燃了 哪怕 最微弱的梦
-我们会 记得你 曾哪怕痛 也从未放下 那一份誓言的重
-
 <span class="section-tag">[Outro]</span>
 (钢琴回归平静) 我心中的... 那一抹红...
+(完整歌词见上文)
                     </div>
                 </div>
             </div>
@@ -296,22 +242,122 @@
         }
         function toggleMusic() { const a=document.getElementById('bgm'); if(a.paused)a.play();else a.pause(); }
 
-        const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0x050505, 0.02);
+        // ============================================
+        // 🔥 核心升级：全息粒子马克思 (Pixel Mapping)
+        // ============================================
+        const scene = new THREE.Scene(); 
+        scene.fog = new THREE.FogExp2(0x050505, 0.02);
+        
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
-        const geometry = new THREE.BufferGeometry(); const count = 3500;
-        const positions = new Float32Array(count*3); const colors = new Float32Array(count*3);
-        for(let i=0; i<count*3; i++){ positions[i]=(Math.random()-0.5)*25; colors[i]=Math.random()>0.5?1:0.6; }
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions,3));
-        geometry.setAttribute('color', new THREE.BufferAttribute(colors,3));
-        const particles = new THREE.Points(geometry, new THREE.PointsMaterial({size:0.06, vertexColors:true, transparent:true, opacity:0.9, blending:THREE.AdditiveBlending}));
-        scene.add(particles); camera.position.z = 5;
-        let mouseX=0, mouseY=0; document.addEventListener('mousemove', e=>{mouseX=(e.clientX-window.innerWidth/2)*0.0005;mouseY=(e.clientY-window.innerHeight/2)*0.0005;});
-        function animate(){requestAnimationFrame(animate);particles.rotation.y+=0.001;particles.rotation.y+=(mouseX-particles.rotation.y)*0.05;renderer.render(scene,camera);}animate();
+        camera.position.z = 100;
+
+        // 1. 创建普通背景粒子 (星空)
+        const starGeo = new THREE.BufferGeometry();
+        const starCount = 2000;
+        const starPos = new Float32Array(starCount * 3);
+        for(let i=0; i<starCount*3; i++) { starPos[i] = (Math.random()-0.5)*300; }
+        starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+        const starMat = new THREE.PointsMaterial({color: 0x444444, size: 0.5, transparent: true, opacity: 0.5});
+        const starMesh = new THREE.Points(starGeo, starMat);
+        scene.add(starMesh);
+
+        // 2. 创建马克思粒子头像
+        let marxParticles;
+        // ⚠️ 确保目录下有 marx.png (黑白或透明背景最佳, 宽度建议200px左右)
+        const imageLoader = new THREE.ImageLoader();
+        imageLoader.load('marx.png', (image) => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 200; // 降低分辨率以提升性能
+            canvas.height = 200 * (image.height / image.width);
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+            
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imgData.data;
+            
+            const geometry = new THREE.BufferGeometry();
+            const positions = [];
+            const colors = [];
+            const color1 = new THREE.Color(0xff2a2a); // 红
+            const color2 = new THREE.Color(0xffd700); // 金
+
+            for (let y = 0; y < canvas.height; y++) {
+                for (let x = 0; x < canvas.width; x++) {
+                    const i = (y * canvas.width + x) * 4;
+                    const r = data[i];
+                    const g = data[i + 1];
+                    const b = data[i + 2];
+                    const a = data[i + 3];
+
+                    // 只有非透明且稍微有点亮度的像素才生成粒子
+                    if (a > 100 && (r+g+b)/3 > 30) {
+                        // 坐标映射：居中
+                        const pX = (x - canvas.width / 2) * 0.4;
+                        const pY = -(y - canvas.height / 2) * 0.4; // 翻转Y轴
+                        // 简单的 3D 浮雕效果：越亮越靠前
+                        const pZ = ((r+g+b)/3) * 0.05; 
+
+                        positions.push(pX, pY, pZ);
+                        
+                        // 随机颜色混合
+                        const mixedColor = color1.clone().lerp(color2, Math.random());
+                        colors.push(mixedColor.r, mixedColor.g, mixedColor.b);
+                    }
+                }
+            }
+
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.4,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.9,
+                blending: THREE.AdditiveBlending
+            });
+
+            marxParticles = new THREE.Points(geometry, material);
+            scene.add(marxParticles);
+            // 初始微调位置
+            marxParticles.position.y = 10; 
+        });
+
+        // 鼠标交互
+        let mouseX = 0, mouseY = 0;
+        let targetRotX = 0, targetRotY = 0;
+        
+        document.addEventListener('mousemove', e => {
+            mouseX = (e.clientX - window.innerWidth/2) * 0.001;
+            mouseY = (e.clientY - window.innerHeight/2) * 0.001;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // 背景星空慢速旋转
+            starMesh.rotation.y += 0.0005;
+
+            // 马克思头像跟随鼠标旋转
+            if (marxParticles) {
+                targetRotY = mouseX * 0.5; // 左右看
+                targetRotX = mouseY * 0.5; // 上下看
+                
+                // 平滑插值 (Lerp)
+                marxParticles.rotation.y += 0.05 * (targetRotY - marxParticles.rotation.y);
+                marxParticles.rotation.x += 0.05 * (targetRotX - marxParticles.rotation.x);
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
+        
         window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);ScrollTrigger.refresh();});
 
+        // GSAP
         gsap.registerPlugin(ScrollTrigger);
         window.addEventListener("load",()=>{ScrollTrigger.refresh();});
         gsap.utils.toArray('.scroll-reveal').forEach(elem=>{
@@ -320,7 +366,7 @@
         const text="哲学家们只是用不同的方式解释世界，问题在于改变世界。";
         let tIdx=0; function typeWriter(){if(tIdx<text.length){document.getElementById("typewriter").innerHTML+=text.charAt(tIdx);tIdx++;setTimeout(typeWriter,50);}}
 
-        // 使用后端代理
+        // AI Chat
         const API_KEY=""; const API_URL="/api/chat";
         async function sendMessage(){
             const i=document.getElementById('user-input'); const t=i.value.trim(); if(!t)return;
