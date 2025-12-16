@@ -321,7 +321,7 @@
         let tIdx=0; function typeWriter(){if(tIdx<text.length){document.getElementById("typewriter").innerHTML+=text.charAt(tIdx);tIdx++;setTimeout(typeWriter,50);}}
 
         // 使用后端代理
-        const API_KEY=""; const API_URL="/api/chat"; 
+        const API_KEY=""; const API_URL="/api/chat";
         async function sendMessage(){
             const i=document.getElementById('user-input'); const t=i.value.trim(); if(!t)return;
             addMessage('user',t); i.value=''; const l=addMessage('ai','<span style="opacity:0.7">思考中...</span>');
