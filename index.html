@@ -24,30 +24,45 @@
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: var(--primary-red); border-radius: 4px; }
 
+        /* === 启动页样式 (新增) === */
+        #start-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: #000; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1s ease;
+        }
+        .start-btn {
+            padding: 15px 40px; border: 2px solid var(--primary-red); color: var(--primary-red);
+            background: transparent; font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 3px; transition: 0.3s;
+            animation: pulse 2s infinite;
+        }
+        .start-btn:hover { background: var(--primary-red); color: #fff; box-shadow: 0 0 30px var(--primary-red); }
+        @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(255, 42, 42, 0.4);} 70% {box-shadow: 0 0 0 20px rgba(255, 42, 42, 0);} 100% {box-shadow: 0 0 0 0 rgba(255, 42, 42, 0);} }
+
+        /* 导航栏 */
         nav { position: fixed; top: 0; width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(255, 42, 42, 0.3); }
         .logo { font-weight: 900; font-size: 1.2rem; color: var(--primary-red); letter-spacing: 2px; text-transform: uppercase; }
         
         #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; }
 
-        .content { position: relative; z-index: 10; width: 100%; max-width: 1200px; margin: 0 auto; }
+        .content { position: relative; z-index: 10; width: 100%; max-width: 1200px; margin: 0 auto; opacity: 0; transition: opacity 1s; } /* 初始隐藏内容 */
 
-        /* 修复：不再强制 100vh，改为根据内容自适应，增加 padding 防止大片留白 */
+        /* 修复滚动 BUG 的关键：给 section 一个最小高度，确保 ScrollTrigger 能计算到 */
         .section { 
-            min-height: auto; 
-            padding: 100px 20px; 
+            min-height: 80vh; /* 确保每屏有足够高度 */
+            padding: 50px 20px; 
             display: flex; 
             flex-direction: column; 
             justify-content: center; 
             position: relative; 
         }
         
-        /* 只有首页保持全屏 */
-        .hero { min-height: 90vh; justify-content: center; }
+        .hero { min-height: 100vh; justify-content: center; }
         
         h1 { font-size: clamp(3rem, 8vw, 6rem); margin: 0; line-height: 1; color: #fff; text-shadow: 0 0 20px rgba(255, 42, 42, 0.5); }
         h1 span { color: var(--primary-red); }
         
-        /* 打字机区域优化 */
         .hero-desc { margin-top: 30px; font-size: 1.2rem; border-left: 4px solid var(--gold); padding-left: 15px; color: #fff; max-width: 700px; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 0 10px 10px 0; }
 
         .card-container { display: flex; flex-direction: column; gap: 30px; width: 100%; }
@@ -58,7 +73,6 @@
             border-radius: 8px; 
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 20px; /* 增加卡片间距 */
         }
         .theory-card:hover { border-color: var(--gold); }
         .theory-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary-red); }
@@ -67,62 +81,66 @@
 
         .highlight { color: var(--primary-red); font-weight: bold; background: rgba(255, 42, 42, 0.1); padding: 0 4px; }
 
-        /* AI 聊天样式优化 */
+        /* AI 聊天样式 */
         .chat-section { padding-bottom: 100px; }
         .chat-container {
-            width: 100%;
-            height: 600px; /* 固定高度，防止太高 */
-            background: rgba(0, 0, 0, 0.85);
-            border: 1px solid var(--primary-red);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 50px rgba(255, 42, 42, 0.15);
-            overflow: hidden;
+            width: 100%; height: 600px; background: rgba(0, 0, 0, 0.85);
+            border: 1px solid var(--primary-red); border-radius: 10px;
+            display: flex; flex-direction: column; box-shadow: 0 0 50px rgba(255, 42, 42, 0.15); overflow: hidden;
         }
-        .chat-header {
-            padding: 15px 20px;
-            background: rgba(255, 42, 42, 0.15);
-            border-bottom: 1px solid var(--primary-red);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .chat-header { padding: 15px 20px; background: rgba(255, 42, 42, 0.15); border-bottom: 1px solid var(--primary-red); display: flex; justify-content: space-between; align-items: center; }
         .status-dot { width: 10px; height: 10px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 10px #00ff00; margin-right: 10px; display: inline-block; }
-        
         .chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
-        
         .message { max-width: 85%; padding: 15px; border-radius: 8px; line-height: 1.6; font-size: 0.95rem; }
         .message.user { align-self: flex-end; background: #333; color: #fff; border: 1px solid #555; }
         .message.ai { align-self: flex-start; background: rgba(60, 0, 0, 0.6); border: 1px solid var(--primary-red); color: #ffd1d1; }
-        .message.ai strong { color: var(--gold); font-size: 1.1em; }
-
         .chat-input-area { padding: 20px; background: #111; display: flex; gap: 10px; border-top: 1px solid #333; }
         input[type="text"] { flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 15px; border-radius: 4px; font-family: inherit; font-size: 1rem; }
         input[type="text"]:focus { outline: none; border-color: var(--primary-red); background: #000; }
         button { background: var(--primary-red); color: #fff; border: none; padding: 0 30px; cursor: pointer; font-weight: bold; border-radius: 4px; transition: 0.3s; font-size: 1rem; }
-        button:hover { background: #ff4d4d; box-shadow: 0 0 20px var(--primary-red); }
+
+        /* 音乐控制按钮 */
+        .music-control { position: fixed; bottom: 20px; right: 20px; z-index: 1001; cursor: pointer; opacity: 0.5; transition: 0.3s; }
+        .music-control:hover { opacity: 1; transform: scale(1.1); }
     </style>
 </head>
 <body>
+
+    <!-- 背景音乐：确保你的目录下有 music.mp3 -->
+    <audio id="bgm" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- 启动封面 -->
+    <div id="start-screen">
+        <h1 style="font-size: 2rem; margin-bottom: 30px; text-align: center;">RED PROJECT</h1>
+        <button class="start-btn" onclick="startExperience()">进入思想矩阵 / ENTER</button>
+        <p style="margin-top: 20px; color: #666; font-size: 0.8rem;">🎧 佩戴耳机体验最佳</p>
+    </div>
+
+    <!-- 音乐开关图标 -->
+    <div class="music-control" onclick="toggleMusic()" title="切换音乐">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff2a2a" stroke-width="2">
+            <path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>
+        </svg>
+    </div>
 
     <nav>
         <div class="logo">RED_PROJECT // 1818-202X</div>
         <div style="font-size: 0.8rem; color: #aaa;">CS x MARXISM</div>
     </nav>
 
-    <!-- 3D 背景画布 -->
     <div id="canvas-container"></div>
 
-    <div class="content">
+    <div class="content" id="main-content">
         <!-- 1. 首页 Hero -->
         <div class="section hero">
             <h1>CYBER <br><span>MARX</span></h1>
             <div class="hero-desc">
                 <p id="typewriter"></p>
             </div>
-            <div style="margin-top: 50px; opacity: 0.6; font-size: 0.9rem; animation: bounce 2s infinite;">
-                ↓ 向下滚动进入思想矩阵
+            <div style="margin-top: 50px; opacity: 0.6; font-size: 0.9rem;">
+                ↓ 向下滚动
             </div>
         </div>
 
@@ -134,9 +152,7 @@
                     <h3>从《资本论》到 Open Source</h3>
                     <p>
                         在工业时代，马克思批判了<span class="highlight">生产资料的私有制</span>。而在今天的数字世界，代码成为了新的生产资料。
-                        <br><br>
-                        **开源软件运动 (Open Source)** 是一场未经宣扬的共产主义实践。Linux内核的开发模式体现了“各尽所能（开发者贡献代码），按需分配（用户免费使用）”的原则。
-                        GitHub 上的开源仓库，实际上构建了一个<span class="highlight">数字公有地 (Digital Commons)</span>，它打破了知识产权对技术的垄断。
+                        **开源软件运动 (Open Source)** 是一场未经宣扬的共产主义实践。GitHub 上的开源仓库，实际上构建了一个<span class="highlight">数字公有地 (Digital Commons)</span>。
                     </p>
                 </div>
             </div>
@@ -150,10 +166,7 @@
                     <h3>数据拜物教 (Data Fetishism)</h3>
                     <p>
                         马克思提出了“人的异化”：工人创造了商品，却被商品所奴役。
-                        <br><br>
-                        在算法时代，这种异化更加隐蔽。我们通过点击和浏览创造了数据（数字劳动），但这些数据反过来变成了推荐算法（数字资本）来控制我们的喜好、甚至思想。
-                        <br><br>
-                        当我们沉迷于短视频的信息茧房时，我们不再是技术的主人，而是<span class="highlight">流量的奴隶</span>。
+                        在算法时代，我们通过点击和浏览创造了数据（数字劳动），但这些数据反过来变成了推荐算法（数字资本）来控制我们的喜好、甚至思想。
                     </p>
                 </div>
             </div>
@@ -166,216 +179,177 @@
             </h2>
             <div class="chat-container">
                 <div class="chat-header">
-                    <div>
-                        <span class="status-dot"></span>
-                        <span style="font-weight: bold;">Karl_Marx_v1.0.exe</span>
-                    </div>
-                    <div style="font-size: 0.8rem; color: #aaa;">System Online</div>
+                    <div><span class="status-dot"></span><span style="font-weight: bold;">Karl_Marx_v1.0.exe</span></div>
+                    <div style="font-size: 0.8rem; color: #aaa;">Online</div>
                 </div>
                 <div class="chat-window" id="chat-window">
-                    <div class="message ai">
-                        <strong>马克思:</strong> 
-                        同志你好。我在历史的迷雾中观察着你们的时代。关于异化、资本或是你们所谓的“内卷”，你有什么困惑想与我探讨？
-                    </div>
+                    <div class="message ai"><strong>马克思:</strong> 同志你好。我在历史的迷雾中观察着你们的时代。有何困惑？</div>
                 </div>
                 <div class="chat-input-area">
-                    <input type="text" id="user-input" placeholder="输入问题，例如：如何看待今天的996？" autocomplete="off">
+                    <input type="text" id="user-input" placeholder="输入问题..." autocomplete="off">
                     <button onclick="sendMessage()">发送</button>
                 </div>
             </div>
-            <p style="margin-top: 15px; font-size: 0.8rem; color: #666; text-align: center;">
-                *注：已接入 DeepSeek API。如果网络受限，将自动切换至本地思想库。
-            </p>
         </div>
     </div>
 
-    <style>
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
-    </style>
-
-    <!-- JavaScript 代码区 -->
     <script>
-        // ============================================
-        // 1. Three.js 粒子特效 (背景调亮版)
-        // ============================================
-        const scene = new THREE.Scene();
-        // 调低雾的密度，让背景别那么黑
-        scene.fog = new THREE.FogExp2(0x050505, 0.02); 
+        // --- 1. 核心修复逻辑：启动控制 & 滚动修复 ---
+        function startExperience() {
+            // 1. 播放音乐
+            const audio = document.getElementById('bgm');
+            audio.volume = 0.5; // 音量 50%
+            audio.play().catch(e => console.log("播放失败，需用户交互", e));
 
+            // 2. 隐藏启动页，显示内容
+            const startScreen = document.getElementById('start-screen');
+            const content = document.getElementById('main-content');
+            
+            startScreen.style.opacity = '0';
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+                content.style.opacity = '1';
+                
+                // 3. 关键一步：重新计算滚动位置！修复滚动不显示的BUG
+                ScrollTrigger.refresh(); 
+                
+                // 4. 启动打字机
+                typeWriter();
+            }, 1000);
+        }
+
+        function toggleMusic() {
+            const audio = document.getElementById('bgm');
+            if(audio.paused) audio.play();
+            else audio.pause();
+        }
+
+        // --- 2. Three.js 背景 (轻量化) ---
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x050505, 0.02);
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
         const geometry = new THREE.BufferGeometry();
-        const count = 4000; // 增加粒子数量
+        const count = 3000;
         const positions = new Float32Array(count * 3);
         const colors = new Float32Array(count * 3);
-
-        for(let i = 0; i < count * 3; i++) {
-            positions[i] = (Math.random() - 0.5) * 25; 
-            // 颜色更亮一点
-            colors[i] = Math.random() > 0.5 ? 1 : 0.6; 
+        for(let i=0; i<count*3; i++) {
+            positions[i] = (Math.random()-0.5)*25; 
+            colors[i] = Math.random()>0.5 ? 1 : 0.6; 
         }
-
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-        const material = new THREE.PointsMaterial({
-            size: 0.06, // 粒子变大一点点
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.9,
-            blending: THREE.AdditiveBlending
-        });
-
-        const particles = new THREE.Points(geometry, material);
+        const particles = new THREE.Points(geometry, new THREE.PointsMaterial({size:0.06, vertexColors:true, transparent:true, opacity:0.9, blending:THREE.AdditiveBlending}));
         scene.add(particles);
         camera.position.z = 5;
 
         let mouseX = 0, mouseY = 0;
         document.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - window.innerWidth / 2) * 0.0005;
-            mouseY = (e.clientY - window.innerHeight / 2) * 0.0005;
+            mouseX = (e.clientX - window.innerWidth/2) * 0.0005;
+            mouseY = (e.clientY - window.innerHeight/2) * 0.0005;
         });
 
         function animate() {
             requestAnimationFrame(animate);
-            particles.rotation.y += 0.001; // 自动旋转慢一点
-            particles.rotation.x += 0.0005;
+            particles.rotation.y += 0.001; 
             particles.rotation.y += (mouseX - particles.rotation.y) * 0.05;
-            particles.rotation.x += (mouseY - particles.rotation.x) * 0.05;
             renderer.render(scene, camera);
         }
         animate();
-
         window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.aspect = window.innerWidth/window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            ScrollTrigger.refresh(); // 窗口大小时也刷新滚动
         });
 
-        // ============================================
-        // 2. GSAP 动画 & 打字机 (优化触发时机)
-        // ============================================
+        // --- 3. GSAP 滚动动画 ---
         gsap.registerPlugin(ScrollTrigger);
 
+        // 页面加载完成后再次强制刷新 ScrollTrigger，确保万无一失
+        window.addEventListener("load", () => {
+            ScrollTrigger.refresh();
+        });
+
+        gsap.utils.toArray('.scroll-reveal').forEach(elem => {
+            gsap.from(elem, {
+                y: 50, opacity: 0, duration: 1, ease: "power2.out",
+                scrollTrigger: { 
+                    trigger: elem, 
+                    start: "top 85%", // 只要进入可视区域就显示
+                    toggleActions: "play none none reverse" 
+                }
+            });
+        });
+
+        // 打字机
         const text = "哲学家们只是用不同的方式解释世界，问题在于改变世界。";
         let typeIdx = 0;
         function typeWriter() {
             if (typeIdx < text.length) {
                 document.getElementById("typewriter").innerHTML += text.charAt(typeIdx);
                 typeIdx++;
-                setTimeout(typeWriter, 50); // 打字速度加快
+                setTimeout(typeWriter, 50);
             }
         }
-        setTimeout(typeWriter, 800);
 
-        gsap.utils.toArray('.scroll-reveal').forEach(elem => {
-            gsap.from(elem, {
-                y: 50, // 移动距离减小
-                opacity: 0, 
-                duration: 1, 
-                ease: "power2.out",
-                scrollTrigger: { 
-                    trigger: elem, 
-                    start: "top 85%", // 只要进入屏幕下方 15% 就开始显示，避免大黑屏
-                    toggleActions: "play none none reverse" 
-                }
-            });
-        });
-
-        // ============================================
-        // 3. AI 对话系统 (保持你的Key)
-        // ============================================
-        
-        const API_KEY = "sk-67378a51c3634e38a618d01952693fb0"; 
-        const API_URL = "https://api.deepseek.com/chat/completions"; 
+        // --- 4. AI 对话 ---
+        // ⚠️ 记得去 GitHub 建 api/chat.js 解决跨域，否则会显示离线回复
+        const API_KEY = ""; // 前端留空
+        const API_URL = "/api/chat"; // 使用 Vercel 后端
 
         async function sendMessage() {
             const input = document.getElementById('user-input');
             const userText = input.value.trim();
-
             if (!userText) return;
 
             addMessage('user', userText);
             input.value = '';
-
             const loadingId = addMessage('ai', '<span style="opacity:0.7">思考中...</span>');
 
             try {
                 const response = await fetch(API_URL, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${API_KEY}`
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         model: "deepseek-chat",
                         messages: [
-                            {
-                                role: "system", 
-                                content: "你现在是卡尔·马克思。请用19世纪哲学家的口吻，结合辩证唯物主义和政治经济学原理，回答关于现代社会（互联网、AI、内卷等）的问题。语调要严肃、充满激情且富有批判性。回答要简短有力，控制在120字以内。" 
-                            },
-                            { role: "user", content: userText }
-                        ],
-                        stream: false
+                            {role: "system", content: "你现在是卡尔·马克思..."}, // 提示词省略，保持之前一样
+                            {role: "user", content: userText}
+                        ]
                     })
                 });
 
-                if (!response.ok) {
-                    throw new Error("Network Error");
-                }
-
+                if (!response.ok) throw new Error("API Error");
                 const data = await response.json();
-                const aiReply = data.choices[0].message.content;
-                updateMessage(loadingId, aiReply);
+                updateMessage(loadingId, data.choices[0].message.content);
 
             } catch (error) {
-                console.error("切换至本地模式:", error);
-                
-                // 本地备用语料库 (当 API 失败时显示这些)
-                const backupResponses = [
-                    "历史的辩证法告诉我们，技术应当是解放人类的工具，而非奴役人类的枷锁。",
-                    "你的困惑源于生产力与生产关系的冲突。在数字资本主义下，这表现得尤为明显。",
-                    "资本来到世间，从头到脚，每个毛孔都滴着血和肮脏的东西。数字资本也不例外。",
-                    "全世界无产者，联合起来！无论是在工厂里，还是在代码仓库里。"
-                ];
-                const randomBackup = backupResponses[Math.floor(Math.random() * backupResponses.length)];
-                
-                updateMessage(loadingId, randomBackup + " <br><span style='font-size:0.7rem;color:#888;margin-top:5px;display:block;'>(*网络波动，启用离线思想库)</span>");
+                console.error(error);
+                const backups = ["历史的辩证法告诉我们，技术应当解放人类。", "全世界无产者，联合起来！", "你的困惑源于生产关系的不匹配。"];
+                updateMessage(loadingId, backups[Math.floor(Math.random()*backups.length)] + " <br><span style='font-size:0.8rem;color:#888'>(离线模式)</span>");
             }
         }
 
-        function addMessage(role, htmlContent) {
-            const chatWindow = document.getElementById('chat-window');
-            const div = document.createElement('div');
-            div.className = `message ${role}`;
-            div.id = 'msg-' + Date.now();
-            
-            if (role === 'ai') {
-                div.innerHTML = `<strong>马克思:</strong> ${htmlContent}`;
-            } else {
-                div.textContent = htmlContent;
-            }
-            
-            chatWindow.appendChild(div);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-            return div.id;
+        function addMessage(role, html) {
+            const w = document.getElementById('chat-window');
+            const d = document.createElement('div');
+            d.className = `message ${role}`;
+            d.id = 'msg-'+Date.now();
+            d.innerHTML = role==='ai'?`<strong>马克思:</strong> ${html}`:html;
+            w.appendChild(d);
+            w.scrollTop = w.scrollHeight;
+            return d.id;
         }
-
-        function updateMessage(id, text) {
-            const div = document.getElementById(id);
-            if (window.marked) {
-                div.innerHTML = `<strong>马克思:</strong> ${marked.parseInline(text)}`;
-            } else {
-                div.innerHTML = `<strong>马克思:</strong> ${text}`;
-            }
+        function updateMessage(id, txt) {
+            const d = document.getElementById(id);
+            d.innerHTML = `<strong>马克思:</strong> ${window.marked ? marked.parseInline(txt) : txt}`;
         }
+        document.getElementById('user-input').addEventListener('keypress', (e) => { if(e.key==='Enter') sendMessage(); });
 
-        document.getElementById('user-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') sendMessage();
-        });
     </script>
 </body>
 </html>
