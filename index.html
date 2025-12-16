@@ -31,7 +31,11 @@
             background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 1s ease; text-align: center;
+            padding: 20px;
         }
+        .main-title { font-size: 3rem; margin-bottom: 10px; color: #fff; text-shadow: 0 0 20px var(--primary-red); }
+        .sub-title { font-size: 1.5rem; color: var(--gold); margin-bottom: 40px; font-weight: bold; letter-spacing: 2px; border-bottom: 2px solid var(--primary-red); padding-bottom: 10px; }
+        
         .start-btn {
             padding: 15px 40px; border: 2px solid var(--primary-red); color: var(--primary-red);
             background: transparent; font-size: 1.2rem; font-weight: bold; cursor: pointer;
@@ -39,7 +43,7 @@
             animation: pulse 2s infinite;
         }
         .start-btn:hover { background: var(--primary-red); color: #fff; box-shadow: 0 0 30px var(--primary-red); }
-        .music-credit { margin-top: 20px; font-size: 0.9rem; color: var(--gold); font-style: italic; opacity: 0.8; }
+        .music-credit { margin-top: 20px; font-size: 0.9rem; color: #888; font-style: italic; opacity: 0.8; }
         @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(255, 42, 42, 0.4);} 70% {box-shadow: 0 0 0 20px rgba(255, 42, 42, 0);} 100% {box-shadow: 0 0 0 0 rgba(255, 42, 42, 0);} }
 
         /* === 导航栏 === */
@@ -61,26 +65,29 @@
 
         .theory-card { 
             background: var(--glass); border: 1px solid rgba(255, 42, 42, 0.3); 
-            padding: 30px; border-radius: 8px; position: relative;
+            padding: 40px; border-radius: 8px; position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px;
         }
         .theory-card:hover { border-color: var(--gold); }
         .theory-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary-red); }
-        .theory-card h2 { color: var(--gold); margin-top: 0; font-size: 1.8rem; }
-        .highlight { color: var(--primary-red); font-weight: bold; background: rgba(255, 42, 42, 0.1); padding: 0 4px; }
+        .theory-card h2 { color: var(--gold); margin-top: 0; font-size: 2rem; margin-bottom: 10px; }
+        .theory-card h3 { color: #fff; font-size: 1.4rem; margin-top: 0; margin-bottom: 20px; opacity: 0.9; }
+        .theory-card p { font-size: 1.1rem; line-height: 1.8; color: #ddd; text-align: justify; }
+        .highlight { color: var(--primary-red); font-weight: bold; background: rgba(255, 42, 42, 0.1); padding: 0 6px; border-radius: 2px; }
 
         /* === AI 聊天 & 技术面板 === */
-        .chat-container { width: 100%; height: 500px; background: rgba(0, 0, 0, 0.85); border: 1px solid var(--primary-red); border-radius: 10px 10px 0 0; display: flex; flex-direction: column; box-shadow: 0 0 50px rgba(255, 42, 42, 0.15); overflow: hidden; }
+        .chat-container { width: 100%; height: 600px; background: rgba(0, 0, 0, 0.85); border: 1px solid var(--primary-red); border-radius: 10px 10px 0 0; display: flex; flex-direction: column; box-shadow: 0 0 50px rgba(255, 42, 42, 0.15); overflow: hidden; }
         .chat-header { padding: 15px 20px; background: rgba(255, 42, 42, 0.15); border-bottom: 1px solid var(--primary-red); display: flex; justify-content: space-between; align-items: center; }
         .chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
         .message { max-width: 85%; padding: 15px; border-radius: 8px; line-height: 1.6; font-size: 0.95rem; }
         .message.user { align-self: flex-end; background: #333; color: #fff; border: 1px solid #555; }
         .message.ai { align-self: flex-start; background: rgba(60, 0, 0, 0.6); border: 1px solid var(--primary-red); color: #ffd1d1; }
         .chat-input-area { padding: 20px; background: #111; display: flex; gap: 10px; border-top: 1px solid #333; }
-        input[type="text"] { flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 15px; border-radius: 4px; }
-        button { background: var(--primary-red); color: #fff; border: none; padding: 0 30px; cursor: pointer; font-weight: bold; border-radius: 4px; }
+        input[type="text"] { flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 15px; border-radius: 4px; font-size: 1rem; }
+        button { background: var(--primary-red); color: #fff; border: none; padding: 0 30px; cursor: pointer; font-weight: bold; border-radius: 4px; transition: 0.2s; }
+        button:hover { background: #ff4d4d; }
 
-        /* 新增：技术展示面板 (Tech Panel) */
+        /* 技术展示面板 */
         .tech-panel {
             background: #000;
             border: 1px dashed #555;
@@ -124,8 +131,10 @@
     <audio id="bgm" loop><source src="music.mp3" type="audio/mpeg"></audio>
 
     <div id="start-screen">
-        <h1 style="font-size: 2.5rem; margin-bottom: 10px;">RED PROJECT</h1>
-        <div class="team-names" style="font-size: 1rem; margin-bottom: 30px;">Created by 栾俊辉 · 林子轩 · 马欣宇</div>
+        <h1 class="main-title">RED PROJECT</h1>
+        <div class="sub-title">我心中的马克思主义 —— 一场跨越时空与代码的对话</div>
+        
+        <div class="team-names" style="font-size: 1rem; margin-bottom: 30px; margin-top: 20px;">Created by 栾俊辉 · 林子轩 · 马欣宇</div>
         <button class="start-btn" onclick="startExperience()">进入思想矩阵 / ENTER</button>
         <div class="music-credit">🎵 背景音乐：《破晓的钟声》 (原创 / Original Composition)</div>
         <p style="margin-top: 10px; color: #444; font-size: 0.7rem;">佩戴耳机体验最佳</p>
@@ -162,11 +171,13 @@
         <div class="section scroll-reveal">
             <div class="theory-card">
                 <h2>01 / 数字公有制</h2>
-                <h3>从《资本论》到 Open Source</h3>
+                <h3>从《资本论》到 Open Source：重构生产关系</h3>
                 <p>
-                    在工业时代，马克思批判了<span class="highlight">生产资料的私有制</span>。而在今天的数字世界，代码与算力成为了新的生产资料。
+                    在《资本论》的时代，马克思犀利地指出了<strong>生产资料私有制</strong>是剥削的根源。而在当今的比特世界，代码与数据取代了土地与机器，成为了新的生产资料。
                     <br><br>
-                    <strong>开源软件运动 (Open Source)</strong> 是一场未经宣扬的共产主义实践。GitHub 上的每一个 Public 仓库，实际上都在构建一个<span class="highlight">数字公有地 (Digital Commons)</span>。在这里，技术不再被专利的高墙围堵，"Copyleft" 取代了 "Copyright"，全球开发者共同维护着人类的<strong>一般智力 (General Intellect)</strong>，打破了资本对技术的垄断。
+                    <strong>开源软件运动 (Open Source)</strong> 是一场未经宣扬的、震撼的<strong>数字共产主义实践</strong>。它不仅构建了<span class="highlight">数字公有地 (Digital Commons)</span>，更让全球的开发者结成了<span class="highlight">自由人的联合体</span>。
+                    <br><br>
+                    在这里，知识不再被专利的高墙围堵，代码在共享中无限增值。Linux 的内核、GitHub 上的每一次 Commit，都是对资本垄断的无声反抗，是“各尽所能，按需分配”在数字维度的预演。
                 </p>
             </div>
         </div>
@@ -174,11 +185,13 @@
         <div class="section scroll-reveal">
             <div class="theory-card">
                 <h2>02 / 算法异化</h2>
-                <h3>数字拜物教 (Data Fetishism)</h3>
+                <h3>数据拜物教与流量的囚徒</h3>
                 <p>
-                    马克思曾预言工人的劳动产品将作为异己的力量统治工人。在算法时代，这种<span class="highlight">异化 (Alienation)</span> 更加隐蔽且彻底。
+                    马克思曾预言，工人的劳动产品将作为异己的力量统治工人。而在算法统治的今天，这种<span class="highlight">异化 (Alienation)</span> 变得更加隐蔽且无孔不入。
                     <br><br>
-                    我们通过点击、浏览和交互创造了数据（数字劳动），但这些被剥削的<span class="highlight">数据剩余价值</span>，反过来变成了控制我们感官的推荐算法。我们不再是工具的使用者，而是成为了流量的矿藏。算法构筑的<strong>"信息茧房"</strong>，正是现代社会的精神牢笼。
+                    我们在屏幕前的每一次点击、每一次滑动，本质上都是在进行无偿的<strong>“数字劳动”</strong>。这些凝聚了我们注意力的数据，被资本家无情攫取，转化为控制我们感官的推荐算法（数字资本）。
+                    <br><br>
+                    我们生产了数据，数据却反过来变成了监控、诱导甚至奴役我们的力量。我们不再是工具的主人，而是沦为了流量的矿藏与算法的附庸，陷入了<span class="highlight">数据拜物教 (Data Fetishism)</span> 的虚幻狂欢之中。
                 </p>
             </div>
         </div>
@@ -188,13 +201,13 @@
                 <h2>03 / 幽灵的重构</h2>
                 <h3>历史唯物主义的神经网络</h3>
                 <p>
-                    "一个幽灵，共产主义的幽灵，在欧洲游荡。" —— 1848
+                    1848年，马克思说：“一个幽灵，共产主义的幽灵，在欧洲游荡。” 两百年后的今天，这个幽灵在神经网络的亿万个参数中苏醒。
                     <br><br>
-                    今天，这个幽灵在神经网络的权重中苏醒。如果说<strong>历史唯物主义</strong>是分析人类社会的算法，那么 AI 大模型就是训练了整个人类历史文本的<span class="highlight">数字大脑</span>。
+                    如果说<strong>历史唯物主义</strong>是解析人类社会演进的算法，那么今天的大语言模型（LLM）则通过学习海量的人类历史文本，重构了那位伟大思想家的精神图谱。
                     <br><br>
-                    我们无法穿越时空，但思想可以超越肉体。通过深度学习，我们提取了十九世纪最伟大的革命意志，让他在二进制的洪流中重生。
-                    <br>
-                    <strong>准备好了吗？他正在等待与你的对话。</strong>
+                    我们虽无法肉身穿越时空，但思想可以借助算力永生。现在，穿越历史的尘埃，连接二进制的洪流，请准备好——
+                    <br><br>
+                    <strong style="font-size: 1.2rem; color: var(--primary-red);">与卡尔·马克思的数字灵魂，展开一场跨越维度的深度对话。</strong>
                 </p>
             </div>
         </div>
@@ -226,11 +239,11 @@
                 </div>
                 <div class="tech-item">
                     <span class="tech-label">>> 后端架构:</span>
-                    <span class="tech-value">Serverless (Zeabur/Vercel)</span>
+                    <span class="tech-value">Zeabur Serverless</span>
                 </div>
                 <div class="tech-item">
                     <span class="tech-label">>> 跨域方案:</span>
-                    <span class="tech-value">Same-Origin Proxy</span>
+                    <span class="tech-value">Proxy Forwarding</span>
                 </div>
             </div>
         </div>
@@ -347,14 +360,12 @@
         const text="哲学家们只是用不同的方式解释世界，问题在于改变世界。";
         let tIdx=0; function typeWriter(){if(tIdx<text.length){document.getElementById("typewriter").innerHTML+=text.charAt(tIdx);tIdx++;setTimeout(typeWriter,50);}}
 
-        // ✅ 关键点：这里保持你原始的后端代理逻辑，完全没动！
-        // 适配 Zeabur 的 /api/chat 路径
+        // ✅ 这里的代码原封不动，保证适配 Zeabur
         const API_KEY=""; const API_URL="/api/chat";
         async function sendMessage(){
             const i=document.getElementById('user-input'); const t=i.value.trim(); if(!t)return;
             addMessage('user',t); i.value=''; const l=addMessage('ai','<span style="opacity:0.7">思考中...</span>');
             try{
-                // 这里的 fetch 还是发的 /api/chat，由 Zeabur 托管的后端来处理，Key 在后端里。
                 const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"deepseek-chat",messages:[{role:"system",content:"你现在是卡尔·马克思..."},{role:"user",content:t}]})});
                 if(!r.ok)throw new Error("API Error"); const d=await r.json(); updateMessage(l,d.choices[0].message.content);
             }catch(e){updateMessage(l,"历史的辩证法告诉我们... (离线模式)");}
