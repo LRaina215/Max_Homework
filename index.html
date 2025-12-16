@@ -21,18 +21,16 @@
 
         body, html { margin: 0; padding: 0; overflow-x: hidden; background-color: var(--bg-color); color: #e0e0e0; font-family: 'Courier New', 'Segoe UI', sans-serif; }
         
-        /* 滚动条 */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: var(--primary-red); border-radius: 4px; }
 
-        /* === 1. 启动页 (Start Screen) === */
+        /* === 启动页 === */
         #start-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
             background: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 1s ease;
-            text-align: center;
+            transition: opacity 1s ease; text-align: center;
         }
         .start-btn {
             padding: 15px 40px; border: 2px solid var(--primary-red); color: var(--primary-red);
@@ -44,170 +42,153 @@
         .music-credit { margin-top: 20px; font-size: 0.9rem; color: var(--gold); font-style: italic; opacity: 0.8; }
         @keyframes pulse { 0% {box-shadow: 0 0 0 0 rgba(255, 42, 42, 0.4);} 70% {box-shadow: 0 0 0 20px rgba(255, 42, 42, 0);} 100% {box-shadow: 0 0 0 0 rgba(255, 42, 42, 0);} }
 
-        /* === 2. 导航栏 & 修复按钮 === */
+        /* === 导航栏 & 修复按钮 === */
         nav { position: fixed; top: 0; width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255, 42, 42, 0.3); box-sizing: border-box; }
         .logo { font-weight: 900; font-size: 1.2rem; color: var(--primary-red); letter-spacing: 1px; }
-        
-        /* 修复按钮样式 */
-        .fix-btn {
-            background: rgba(255, 255, 255, 0.1); border: 1px solid #555; color: #aaa;
-            padding: 5px 10px; font-size: 0.7rem; cursor: pointer; border-radius: 4px;
-            transition: 0.3s;
-        }
+        .fix-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid #555; color: #aaa; padding: 5px 10px; font-size: 0.7rem; cursor: pointer; border-radius: 4px; transition: 0.3s; }
         .fix-btn:hover { border-color: var(--gold); color: var(--gold); }
 
         #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; }
 
         .content { position: relative; z-index: 10; width: 100%; max-width: 1200px; margin: 0 auto; opacity: 0; transition: opacity 1s; }
 
-        /* Section 通用布局 */
-        .section { 
-            min-height: 85vh; /* 保证高度，利于滚动计算 */
-            padding: 80px 20px; 
-            display: flex; flex-direction: column; justify-content: center; 
-            position: relative; 
-        }
-        
+        .section { min-height: 85vh; padding: 80px 20px; display: flex; flex-direction: column; justify-content: center; position: relative; }
         .hero { min-height: 100vh; justify-content: center; }
         
         h1 { font-size: clamp(3rem, 8vw, 6rem); margin: 0; line-height: 1; color: #fff; text-shadow: 0 0 20px rgba(255, 42, 42, 0.5); }
         h1 span { color: var(--primary-red); }
-        
         .hero-desc { margin-top: 30px; font-size: 1.2rem; border-left: 4px solid var(--gold); padding-left: 15px; color: #fff; max-width: 700px; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 0 10px 10px 0; }
 
-        /* 卡片样式 */
+        /* 卡片通用样式 */
         .theory-card { 
-            background: var(--glass); 
-            border: 1px solid rgba(255, 42, 42, 0.3); 
+            background: var(--glass); border: 1px solid rgba(255, 42, 42, 0.3); 
             padding: 30px; border-radius: 8px; position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px;
         }
         .theory-card:hover { border-color: var(--gold); }
         .theory-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary-red); }
         .theory-card h2 { color: var(--gold); margin-top: 0; font-size: 1.8rem; }
-        .theory-card p { line-height: 1.8; color: #ddd; font-size: 1.05rem; text-align: justify; }
-
         .highlight { color: var(--primary-red); font-weight: bold; background: rgba(255, 42, 42, 0.1); padding: 0 4px; }
 
         /* AI 聊天 */
-        .chat-container {
-            width: 100%; height: 500px; background: rgba(0, 0, 0, 0.85);
-            border: 1px solid var(--primary-red); border-radius: 10px;
-            display: flex; flex-direction: column; box-shadow: 0 0 50px rgba(255, 42, 42, 0.15); overflow: hidden;
-        }
+        .chat-container { width: 100%; height: 500px; background: rgba(0, 0, 0, 0.85); border: 1px solid var(--primary-red); border-radius: 10px; display: flex; flex-direction: column; box-shadow: 0 0 50px rgba(255, 42, 42, 0.15); overflow: hidden; }
         .chat-header { padding: 15px 20px; background: rgba(255, 42, 42, 0.15); border-bottom: 1px solid var(--primary-red); display: flex; justify-content: space-between; align-items: center; }
-        .status-dot { width: 10px; height: 10px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 10px #00ff00; margin-right: 10px; display: inline-block; }
         .chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
         .message { max-width: 85%; padding: 15px; border-radius: 8px; line-height: 1.6; font-size: 0.95rem; }
         .message.user { align-self: flex-end; background: #333; color: #fff; border: 1px solid #555; }
         .message.ai { align-self: flex-start; background: rgba(60, 0, 0, 0.6); border: 1px solid var(--primary-red); color: #ffd1d1; }
         .chat-input-area { padding: 20px; background: #111; display: flex; gap: 10px; border-top: 1px solid #333; }
-        input[type="text"] { flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 15px; border-radius: 4px; font-family: inherit; font-size: 1rem; }
-        input[type="text"]:focus { outline: none; border-color: var(--primary-red); background: #000; }
-        button { background: var(--primary-red); color: #fff; border: none; padding: 0 30px; cursor: pointer; font-weight: bold; border-radius: 4px; transition: 0.3s; font-size: 1rem; }
+        input[type="text"] { flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 15px; border-radius: 4px; }
+        button { background: var(--primary-red); color: #fff; border: none; padding: 0 30px; cursor: pointer; font-weight: bold; border-radius: 4px; }
+
+        /* === 新增：原创展示区布局 === */
+        .showcase-container {
+            display: flex; gap: 30px;
+            height: 600px; /* 固定高度 */
+        }
+        
+        /* 左侧：手抄报 */
+        .poster-box {
+            flex: 1;
+            background: #111;
+            border: 2px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            transition: 0.3s;
+        }
+        .poster-box:hover { border-color: var(--gold); box-shadow: 0 0 30px rgba(255, 215, 0, 0.2); }
+        .poster-box img { width: 100%; height: 100%; object-fit: contain; background: #000; }
+        .poster-label {
+            position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.8);
+            color: #fff; text-align: center; padding: 10px; font-size: 0.9rem; border-top: 1px solid var(--primary-red);
+        }
+
+        /* 右侧：歌词本 */
+        .lyrics-box {
+            flex: 1;
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(255, 42, 42, 0.3);
+            border-radius: 8px;
+            padding: 30px;
+            overflow-y: auto; /* 允许滚动 */
+            display: flex; flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+        .lyrics-title { color: var(--gold); font-size: 1.5rem; border-bottom: 2px solid var(--primary-red); padding-bottom: 15px; margin-bottom: 20px; }
+        .lyrics-content { font-size: 0.95rem; line-height: 1.8; color: #ccc; white-space: pre-wrap; font-family: 'Segoe UI', sans-serif; }
+        .section-tag { color: var(--primary-red); font-weight: bold; margin-top: 15px; display: block; }
+
+        @media (max-width: 768px) {
+            .showcase-container { flex-direction: column; height: auto; }
+            .poster-box { height: 300px; }
+            .lyrics-box { height: 400px; }
+        }
 
         /* 音乐按钮 */
         .music-control { position: fixed; bottom: 80px; right: 20px; z-index: 1001; cursor: pointer; opacity: 0.5; transition: 0.3s; }
         .music-control:hover { opacity: 1; transform: scale(1.1); }
 
-        /* === 底部 Footer (新增) === */
-        footer {
-            background: rgba(0,0,0,0.9); border-top: 1px solid #333;
-            padding: 40px 20px; text-align: center; color: #666; font-size: 0.9rem;
-            position: relative; z-index: 100; margin-top: 50px;
-        }
-        .footer-info { margin-bottom: 10px; }
+        footer { background: rgba(0,0,0,0.9); border-top: 1px solid #333; padding: 40px 20px; text-align: center; color: #666; margin-top: 50px; }
         .team-names { color: var(--gold); font-weight: bold; margin-bottom: 10px; letter-spacing: 1px; }
-        .course-info { font-size: 0.8rem; opacity: 0.7; }
 
     </style>
 </head>
 <body>
 
-    <!-- 🎵 背景音乐：请确保文件名为 music.mp3 -->
-    <audio id="bgm" loop>
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
+    <!-- 🎵 音乐 & 封面 -->
+    <audio id="bgm" loop><source src="music.mp3" type="audio/mpeg"></audio>
 
-    <!-- 1. 启动封面 -->
     <div id="start-screen">
         <h1 style="font-size: 2.5rem; margin-bottom: 10px;">RED PROJECT</h1>
-        <div class="team-names" style="font-size: 1rem; margin-bottom: 30px;">
-            Created by 栾俊辉 · 林子轩 · 马欣宇
-        </div>
-        
+        <div class="team-names" style="font-size: 1rem; margin-bottom: 30px;">Created by 栾俊辉 · 林子轩 · 马欣宇</div>
         <button class="start-btn" onclick="startExperience()">进入思想矩阵 / ENTER</button>
-        
-        <!-- 原创歌曲标注 -->
-        <div class="music-credit">
-            🎵 背景音乐：《破晓的钟声》 (原创 / Original Composition)
-        </div>
+        <div class="music-credit">🎵 背景音乐：《破晓的钟声》 (原创 / Original Composition)</div>
         <p style="margin-top: 10px; color: #444; font-size: 0.7rem;">佩戴耳机体验最佳</p>
     </div>
 
-    <!-- 音乐开关 -->
     <div class="music-control" onclick="toggleMusic()" title="切换音乐">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff2a2a" stroke-width="2">
-            <path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>
-        </svg>
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ff2a2a" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
     </div>
 
-    <!-- 导航栏 -->
     <nav>
         <div class="logo">RED_PROJECT // 1818-202X</div>
-        <!-- 🛠️ 强制显示按钮：解决内容不显示的终极手段 -->
-        <button class="fix-btn" onclick="forceShowContent()" title="如果滚动看不到内容，请点此按钮">
-            ⚠️ 内容没显示？点我修复
-        </button>
+        <button class="fix-btn" onclick="forceShowContent()">⚠️ 内容没显示？点我修复</button>
     </nav>
 
-    <!-- 3D 画布 -->
     <div id="canvas-container"></div>
 
-    <!-- 主内容区 -->
     <div class="content" id="main-content">
         
-        <!-- Hero Section -->
+        <!-- Hero -->
         <div class="section hero">
             <h1>CYBER <br><span>MARX</span></h1>
-            <div class="hero-desc">
-                <p id="typewriter"></p>
-            </div>
+            <div class="hero-desc"><p id="typewriter"></p></div>
             <div style="margin-top: 50px; opacity: 0.6; font-size: 0.9rem;">↓ 向下滚动</div>
         </div>
 
-        <!-- Section 1 -->
+        <!-- 理论 01 -->
         <div class="section scroll-reveal">
             <div class="theory-card">
                 <h2>01 / 数字公有制</h2>
                 <h3>从《资本论》到 Open Source</h3>
-                <p>
-                    在工业时代，马克思批判了<span class="highlight">生产资料的私有制</span>。而在今天的数字世界，代码成为了新的生产资料。
-                    <br><br>
-                    **开源软件运动 (Open Source)** 是一场未经宣扬的共产主义实践。GitHub 上的开源仓库，实际上构建了一个<span class="highlight">数字公有地 (Digital Commons)</span>，它打破了知识产权对技术的垄断，让全人类共享智慧的结晶。
-                </p>
+                <p>在工业时代，马克思批判了<span class="highlight">生产资料的私有制</span>。而在今天的数字世界，代码成为了新的生产资料。<br><br>**开源软件运动 (Open Source)** 是一场未经宣扬的共产主义实践。GitHub 上的开源仓库，实际上构建了一个<span class="highlight">数字公有地 (Digital Commons)</span>，它打破了知识产权对技术的垄断。</p>
             </div>
         </div>
 
-        <!-- Section 2 -->
+        <!-- 理论 02 -->
         <div class="section scroll-reveal">
             <div class="theory-card">
                 <h2>02 / 算法异化</h2>
                 <h3>数据拜物教 (Data Fetishism)</h3>
-                <p>
-                    马克思提出了“人的异化”：工人创造了商品，却被商品所奴役。
-                    <br><br>
-                    在算法时代，这种异化更加隐蔽。我们通过点击和浏览创造了数据（数字劳动），但这些数据反过来变成了推荐算法（数字资本）来控制我们的喜好。
-                    当我们沉迷于短视频的信息茧房时，我们不再是技术的主人，而是<span class="highlight">流量的奴隶</span>。
-                </p>
+                <p>在算法时代，异化更加隐蔽。我们通过点击和浏览创造了数据（数字劳动），但这些数据反过来变成了推荐算法（数字资本）来控制我们的喜好。我们不再是技术的主人，而是<span class="highlight">流量的奴隶</span>。</p>
             </div>
         </div>
 
-        <!-- Section 3: AI Chat -->
+        <!-- AI Chat -->
         <div class="section scroll-reveal chat-section">
-            <h2 style="margin-bottom: 30px; color: #fff; font-size: 2rem;">
-                <span style="color:var(--primary-red)">//</span> 跨时空连线：Ask Marx
-            </h2>
+            <h2 style="margin-bottom: 30px; color: #fff; font-size: 2rem;"><span style="color:var(--primary-red)">//</span> 跨时空连线：Ask Marx</h2>
             <div class="chat-container">
                 <div class="chat-header">
                     <div><span class="status-dot"></span><span style="font-weight: bold;">Karl_Marx_v1.0.exe</span></div>
@@ -223,7 +204,70 @@
             </div>
         </div>
 
-        <!-- 底部信息 Footer -->
+        <!-- NEW: 原创成果展示 (手抄报 + 歌词) -->
+        <div class="section scroll-reveal" style="min-height: auto;">
+            <h2 style="margin-bottom: 30px; color: #fff; font-size: 2rem; border-left: 5px solid var(--gold); padding-left: 20px;">
+                <span style="color:var(--gold)">//</span> 团队原创成果展示
+            </h2>
+            <div class="showcase-container">
+                <!-- 手抄报 -->
+                <div class="poster-box">
+                    <img src="poster.jpg" alt="小组手抄报 - 我心中的马克思">
+                    <div class="poster-label">📷 团队手绘作品：《我心中的马克思》</div>
+                </div>
+                
+                <!-- 歌词 -->
+                <div class="lyrics-box">
+                    <div class="lyrics-title">🎵 原创歌曲：《破晓的钟声》</div>
+                    <div class="lyrics-content">
+<span class="section-tag">[Intro]</span>
+(温暖的钢琴独奏，像晨光洒下) (弦乐慢慢升起)
+
+<span class="section-tag">[Verse 1]</span>
+翻开了 这一页 泛黄的纸张 却依然滚烫
+特里尔的风 吹散了迷雾 指引我方向
+我看过 太多 迷茫的脸庞 在十字路口 失去了主张
+
+<span class="section-tag">[Verse 2]</span>
+直到我遇见你 写下的诗行 像一道雷电 划破了屏障
+你说 这世界 不仅仅是想象 要用手 去改变它 原本的模样
+
+<span class="section-tag">[Pre-Chorus]</span>
+不是高高在上 冰冷的雕像 而是跟我一样 热血的胸膛
+
+<span class="section-tag">[Chorus]</span>
+你是 我心中 破晓的钟声 唤醒了 沉睡 那个梦
+你让 我看懂 平凡的英雄 也拥有 撼动世界 的光荣
+穿越过 百年时空的裂缝 你依然年轻 依然让我们 感动
+
+<span class="section-tag">[Interlude]</span>
+(电吉他 Solo，温暖且充满力量)
+
+<span class="section-tag">[Verse 3]</span>
+我们正 走在你 铺开的路上 每一步脚印 都写满倔强
+真理的味道 也许会苦涩 但回味悠长 能滋养生长
+
+<span class="section-tag">[Chorus]</span>
+你是 我心中 破晓的钟声 唤醒了 沉睡 那个梦
+你让 我看懂 平凡的英雄 也拥有 撼动世界 的光荣
+穿越过 百年时空的裂缝 你依然年轻 依然让我们 感动
+
+<span class="section-tag">[Bridge]</span>
+薪火在传递 从你的手里 交到了 我们的手里...
+(鼓点渐强滚奏) 生生！不息！
+
+<span class="section-tag">[Chorus - Final]</span>
+你是 我心中 不灭的火种 点燃了 哪怕 最微弱的梦
+我们会 记得你 曾哪怕痛 也从未放下 那一份誓言的重
+
+<span class="section-tag">[Outro]</span>
+(钢琴回归平静) 我心中的... 那一抹红...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
         <footer>
             <div class="team-names">Team: 栾俊辉 / 林子轩 / 马欣宇</div>
             <div class="course-info">Create For - 马克思主义原理2024级智能科学与技术课程作业</div>
@@ -233,174 +277,66 @@
     </div>
 
     <script>
-        // ============================================
-        // 1. 核心修复逻辑：强制显示 + 启动控制
-        // ============================================
-        
-        // 🚨 终极修复函数：如果内容没出来，点右上角按钮，强制清除所有隐藏效果
+        // 核心逻辑
         function forceShowContent() {
-            // 1. 杀掉所有正在进行的 GSAP 动画，防止干扰
             ScrollTrigger.getAll().forEach(t => t.kill());
-            
-            // 2. 强制把所有内容块设为可见
-            const elements = document.querySelectorAll('.content, .section, .scroll-reveal, .theory-card');
-            elements.forEach(el => {
-                el.style.opacity = '1';
-                el.style.transform = 'none';
-                el.style.visibility = 'visible';
+            document.querySelectorAll('.content, .section, .scroll-reveal, .theory-card').forEach(el => {
+                el.style.opacity = '1'; el.style.transform = 'none'; el.style.visibility = 'visible';
             });
-            
-            alert("已执行强制修复：内容应已全部显示。");
+            alert("已执行强制修复。");
         }
 
         function startExperience() {
-            // 播放原创音乐
             const audio = document.getElementById('bgm');
-            audio.volume = 0.5;
-            audio.play().catch(e => console.log("需交互才能播放"));
-
-            const startScreen = document.getElementById('start-screen');
-            const content = document.getElementById('main-content');
-            
-            startScreen.style.opacity = '0';
+            audio.volume = 0.5; audio.play().catch(e => console.log("需交互播放"));
+            document.getElementById('start-screen').style.opacity = '0';
             setTimeout(() => {
-                startScreen.style.display = 'none';
-                content.style.opacity = '1';
-                
-                // 关键：页面显示后，重新计算滚动位置
-                ScrollTrigger.refresh(); 
-                typeWriter();
+                document.getElementById('start-screen').style.display = 'none';
+                document.getElementById('main-content').style.opacity = '1';
+                ScrollTrigger.refresh(); typeWriter();
             }, 1000);
         }
+        function toggleMusic() { const a=document.getElementById('bgm'); if(a.paused)a.play();else a.pause(); }
 
-        function toggleMusic() {
-            const audio = document.getElementById('bgm');
-            if(audio.paused) audio.play(); else audio.pause();
-        }
-
-        // ============================================
-        // 2. Three.js 背景
-        // ============================================
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x050505, 0.02);
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        // Three.js
+        const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0x050505, 0.02);
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-        const geometry = new THREE.BufferGeometry();
-        const count = 3500;
-        const positions = new Float32Array(count * 3);
-        const colors = new Float32Array(count * 3);
-        for(let i=0; i<count*3; i++) {
-            positions[i] = (Math.random()-0.5)*25; 
-            colors[i] = Math.random()>0.5 ? 1 : 0.6; 
-        }
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        const geometry = new THREE.BufferGeometry(); const count = 3500;
+        const positions = new Float32Array(count*3); const colors = new Float32Array(count*3);
+        for(let i=0; i<count*3; i++){ positions[i]=(Math.random()-0.5)*25; colors[i]=Math.random()>0.5?1:0.6; }
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions,3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors,3));
         const particles = new THREE.Points(geometry, new THREE.PointsMaterial({size:0.06, vertexColors:true, transparent:true, opacity:0.9, blending:THREE.AdditiveBlending}));
-        scene.add(particles);
-        camera.position.z = 5;
+        scene.add(particles); camera.position.z = 5;
+        let mouseX=0, mouseY=0; document.addEventListener('mousemove', e=>{mouseX=(e.clientX-window.innerWidth/2)*0.0005;mouseY=(e.clientY-window.innerHeight/2)*0.0005;});
+        function animate(){requestAnimationFrame(animate);particles.rotation.y+=0.001;particles.rotation.y+=(mouseX-particles.rotation.y)*0.05;renderer.render(scene,camera);}animate();
+        window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);ScrollTrigger.refresh();});
 
-        let mouseX = 0, mouseY = 0;
-        document.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - window.innerWidth/2) * 0.0005;
-            mouseY = (e.clientY - window.innerHeight/2) * 0.0005;
-        });
-        function animate() {
-            requestAnimationFrame(animate);
-            particles.rotation.y += 0.001; 
-            particles.rotation.y += (mouseX - particles.rotation.y) * 0.05;
-            renderer.render(scene, camera);
-        }
-        animate();
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth/window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            ScrollTrigger.refresh();
-        });
-
-        // ============================================
-        // 3. GSAP 滚动动画
-        // ============================================
+        // GSAP
         gsap.registerPlugin(ScrollTrigger);
-
-        window.addEventListener("load", () => { ScrollTrigger.refresh(); });
-
-        gsap.utils.toArray('.scroll-reveal').forEach(elem => {
-            gsap.from(elem, {
-                y: 50, opacity: 0, duration: 1, ease: "power2.out",
-                scrollTrigger: { 
-                    trigger: elem, start: "top 85%", toggleActions: "play none none reverse" 
-                }
-            });
+        window.addEventListener("load",()=>{ScrollTrigger.refresh();});
+        gsap.utils.toArray('.scroll-reveal').forEach(elem=>{
+            gsap.from(elem, { y: 50, opacity: 0, duration: 1, ease: "power2.out", scrollTrigger: { trigger: elem, start: "top 85%", toggleActions: "play none none reverse" } });
         });
+        const text="哲学家们只是用不同的方式解释世界，问题在于改变世界。";
+        let tIdx=0; function typeWriter(){if(tIdx<text.length){document.getElementById("typewriter").innerHTML+=text.charAt(tIdx);tIdx++;setTimeout(typeWriter,50);}}
 
-        const text = "哲学家们只是用不同的方式解释世界，问题在于改变世界。";
-        let typeIdx = 0;
-        function typeWriter() {
-            if (typeIdx < text.length) {
-                document.getElementById("typewriter").innerHTML += text.charAt(typeIdx);
-                typeIdx++;
-                setTimeout(typeWriter, 50);
-            }
+        // AI Chat
+        const API_KEY=""; const API_URL="/api/chat";
+        async function sendMessage(){
+            const i=document.getElementById('user-input'); const t=i.value.trim(); if(!t)return;
+            addMessage('user',t); i.value=''; const l=addMessage('ai','<span style="opacity:0.7">思考中...</span>');
+            try{
+                const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"deepseek-chat",messages:[{role:"system",content:"你现在是卡尔·马克思..."},{role:"user",content:t}]})});
+                if(!r.ok)throw new Error("API Error"); const d=await r.json(); updateMessage(l,d.choices[0].message.content);
+            }catch(e){updateMessage(l,"历史的辩证法告诉我们... (离线模式)");}
         }
-
-        // ============================================
-        // 4. AI 对话
-        // ============================================
-        const API_KEY = ""; // 前端留空，使用 Vercel 后端
-        const API_URL = "/api/chat"; 
-
-        async function sendMessage() {
-            const input = document.getElementById('user-input');
-            const userText = input.value.trim();
-            if (!userText) return;
-
-            addMessage('user', userText);
-            input.value = '';
-            const loadingId = addMessage('ai', '<span style="opacity:0.7">思考中...</span>');
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        model: "deepseek-chat",
-                        messages: [
-                            {role: "system", content: "你现在是卡尔·马克思..."}, 
-                            {role: "user", content: userText}
-                        ]
-                    })
-                });
-
-                if (!response.ok) throw new Error("API Error");
-                const data = await response.json();
-                updateMessage(loadingId, data.choices[0].message.content);
-
-            } catch (error) {
-                console.error(error);
-                const backups = ["历史的辩证法告诉我们，技术应当解放人类。", "你的困惑源于生产关系的不匹配。", "全世界无产者，联合起来！"];
-                updateMessage(loadingId, backups[Math.floor(Math.random()*backups.length)] + " <br><span style='font-size:0.8rem;color:#888'>(离线模式)</span>");
-            }
-        }
-
-        function addMessage(role, html) {
-            const w = document.getElementById('chat-window');
-            const d = document.createElement('div');
-            d.className = `message ${role}`;
-            d.id = 'msg-'+Date.now();
-            d.innerHTML = role==='ai'?`<strong>马克思:</strong> ${html}`:html;
-            w.appendChild(d);
-            w.scrollTop = w.scrollHeight;
-            return d.id;
-        }
-        function updateMessage(id, txt) {
-            const d = document.getElementById(id);
-            d.innerHTML = `<strong>马克思:</strong> ${window.marked ? marked.parseInline(txt) : txt}`;
-        }
-        document.getElementById('user-input').addEventListener('keypress', (e) => { if(e.key==='Enter') sendMessage(); });
+        function addMessage(r,h){const w=document.getElementById('chat-window'),d=document.createElement('div');d.className=`message ${r}`;d.id='msg-'+Date.now();d.innerHTML=r==='ai'?`<strong>马克思:</strong> ${h}`:h;w.appendChild(d);w.scrollTop=w.scrollHeight;return d.id;}
+        function updateMessage(id,t){document.getElementById(id).innerHTML=`<strong>马克思:</strong> ${window.marked?marked.parseInline(t):t}`;}
+        document.getElementById('user-input').addEventListener('keypress',e=>{if(e.key==='Enter')sendMessage();});
     </script>
 </body>
 </html>
