@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project RED: 赛博马克思 | 穿越时空的辩证法</title>
     
-    <!-- 引入必要的库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
@@ -16,7 +15,7 @@
             --primary-red: #ff2a2a;
             --gold: #ffd700;
             --bg-color: #050505;
-            --glass: rgba(20, 20, 20, 0.7);
+            --glass: rgba(20, 20, 20, 0.85);
         }
 
         body, html { margin: 0; padding: 0; overflow-x: hidden; background-color: var(--bg-color); color: #e0e0e0; font-family: 'Courier New', 'Segoe UI', sans-serif; }
@@ -25,58 +24,65 @@
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: var(--primary-red); border-radius: 4px; }
 
-        nav { position: fixed; top: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-sizing: border-box; mix-blend-mode: difference; }
-        .logo { font-weight: 900; font-size: 1.5rem; color: var(--primary-red); letter-spacing: 2px; text-transform: uppercase; border: 2px solid var(--primary-red); padding: 5px 10px; }
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); border-bottom: 1px solid rgba(255, 42, 42, 0.3); }
+        .logo { font-weight: 900; font-size: 1.2rem; color: var(--primary-red); letter-spacing: 2px; text-transform: uppercase; }
         
         #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; }
 
-        .content { position: relative; z-index: 10; width: 100%; }
+        .content { position: relative; z-index: 10; width: 100%; max-width: 1200px; margin: 0 auto; }
 
-        .section { min-height: 100vh; padding: 0 10%; display: flex; align-items: center; justify-content: center; position: relative; box-sizing: border-box; }
+        /* 修复：不再强制 100vh，改为根据内容自适应，增加 padding 防止大片留白 */
+        .section { 
+            min-height: auto; 
+            padding: 100px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            position: relative; 
+        }
         
-        .hero { flex-direction: column; align-items: flex-start; justify-content: center; height: 100vh; }
+        /* 只有首页保持全屏 */
+        .hero { min-height: 90vh; justify-content: center; }
+        
         h1 { font-size: clamp(3rem, 8vw, 6rem); margin: 0; line-height: 1; color: #fff; text-shadow: 0 0 20px rgba(255, 42, 42, 0.5); }
         h1 span { color: var(--primary-red); }
-        .hero-desc { margin-top: 20px; font-size: 1.2rem; border-left: 4px solid var(--gold); padding-left: 15px; color: #aaa; max-width: 600px; }
+        
+        /* 打字机区域优化 */
+        .hero-desc { margin-top: 30px; font-size: 1.2rem; border-left: 4px solid var(--gold); padding-left: 15px; color: #fff; max-width: 700px; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 0 10px 10px 0; }
 
-        .card-container { display: flex; flex-direction: column; gap: 50px; width: 100%; }
+        .card-container { display: flex; flex-direction: column; gap: 30px; width: 100%; }
         .theory-card { 
             background: var(--glass); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 42, 42, 0.2); 
-            padding: 40px; 
-            border-radius: 4px; 
+            border: 1px solid rgba(255, 42, 42, 0.3); 
+            padding: 30px; 
+            border-radius: 8px; 
             position: relative;
-            overflow: hidden;
-            transition: transform 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px; /* 增加卡片间距 */
         }
-        .theory-card:hover { border-color: var(--gold); transform: translateY(-5px); }
-        .theory-card::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--primary-red); }
-        .theory-card h2 { color: var(--gold); margin-top: 0; font-size: 2rem; }
-        .theory-card h3 { color: #fff; margin-bottom: 10px; font-size: 1.2rem; display: flex; align-items: center; }
-        .theory-card h3::before { content: '>'; margin-right: 10px; color: var(--primary-red); }
-        .theory-card p { line-height: 1.8; color: #ccc; font-size: 1rem; text-align: justify; }
+        .theory-card:hover { border-color: var(--gold); }
+        .theory-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary-red); }
+        .theory-card h2 { color: var(--gold); margin-top: 0; font-size: 1.8rem; }
+        .theory-card p { line-height: 1.8; color: #ddd; font-size: 1.05rem; text-align: justify; }
 
         .highlight { color: var(--primary-red); font-weight: bold; background: rgba(255, 42, 42, 0.1); padding: 0 4px; }
 
-        /* AI 聊天样式 */
-        .chat-section { flex-direction: column; justify-content: center; }
+        /* AI 聊天样式优化 */
+        .chat-section { padding-bottom: 100px; }
         .chat-container {
             width: 100%;
-            max-width: 800px;
-            height: 70vh;
-            background: rgba(0, 0, 0, 0.8);
+            height: 600px; /* 固定高度，防止太高 */
+            background: rgba(0, 0, 0, 0.85);
             border: 1px solid var(--primary-red);
             border-radius: 10px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 0 30px rgba(255, 42, 42, 0.1);
+            box-shadow: 0 0 50px rgba(255, 42, 42, 0.15);
             overflow: hidden;
         }
         .chat-header {
             padding: 15px 20px;
-            background: rgba(255, 42, 42, 0.1);
+            background: rgba(255, 42, 42, 0.15);
             border-bottom: 1px solid var(--primary-red);
             display: flex;
             justify-content: space-between;
@@ -84,32 +90,25 @@
         }
         .status-dot { width: 10px; height: 10px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 10px #00ff00; margin-right: 10px; display: inline-block; }
         
-        .chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
         
-        .message { max-width: 80%; padding: 12px 18px; border-radius: 8px; line-height: 1.5; font-size: 0.95rem; }
-        .message.user { align-self: flex-end; background: rgba(255, 255, 255, 0.1); border: 1px solid #555; color: #fff; }
-        .message.ai { align-self: flex-start; background: rgba(255, 42, 42, 0.15); border: 1px solid var(--primary-red); color: #ffd1d1; }
-        .message.ai strong { color: var(--gold); }
+        .message { max-width: 85%; padding: 15px; border-radius: 8px; line-height: 1.6; font-size: 0.95rem; }
+        .message.user { align-self: flex-end; background: #333; color: #fff; border: 1px solid #555; }
+        .message.ai { align-self: flex-start; background: rgba(60, 0, 0, 0.6); border: 1px solid var(--primary-red); color: #ffd1d1; }
+        .message.ai strong { color: var(--gold); font-size: 1.1em; }
 
-        .chat-input-area { padding: 20px; background: rgba(0,0,0,0.5); display: flex; gap: 10px; border-top: 1px solid #333; }
-        input[type="text"] { flex: 1; background: transparent; border: 1px solid #555; color: #fff; padding: 12px; border-radius: 4px; font-family: inherit; }
-        input[type="text"]:focus { outline: none; border-color: var(--primary-red); }
-        button { background: var(--primary-red); color: #fff; border: none; padding: 0 25px; cursor: pointer; font-weight: bold; text-transform: uppercase; border-radius: 4px; transition: 0.3s; }
-        button:hover { background: #cc0000; box-shadow: 0 0 15px var(--primary-red); }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 3rem; }
-            .section { padding: 0 5%; }
-            .theory-card { padding: 20px; }
-            .message { max-width: 95%; }
-        }
+        .chat-input-area { padding: 20px; background: #111; display: flex; gap: 10px; border-top: 1px solid #333; }
+        input[type="text"] { flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 15px; border-radius: 4px; font-family: inherit; font-size: 1rem; }
+        input[type="text"]:focus { outline: none; border-color: var(--primary-red); background: #000; }
+        button { background: var(--primary-red); color: #fff; border: none; padding: 0 30px; cursor: pointer; font-weight: bold; border-radius: 4px; transition: 0.3s; font-size: 1rem; }
+        button:hover { background: #ff4d4d; box-shadow: 0 0 20px var(--primary-red); }
     </style>
 </head>
 <body>
 
     <nav>
         <div class="logo">RED_PROJECT // 1818-202X</div>
-        <div style="font-size: 0.8rem; opacity: 0.8;">CS x MARXISM</div>
+        <div style="font-size: 0.8rem; color: #aaa;">CS x MARXISM</div>
     </nav>
 
     <!-- 3D 背景画布 -->
@@ -122,15 +121,15 @@
             <div class="hero-desc">
                 <p id="typewriter"></p>
             </div>
-            <div style="margin-top: 50px; opacity: 0.5; font-size: 0.8rem;">
+            <div style="margin-top: 50px; opacity: 0.6; font-size: 0.9rem; animation: bounce 2s infinite;">
                 ↓ 向下滚动进入思想矩阵
             </div>
         </div>
 
         <!-- 2. 深度内容：开源 -->
-        <div class="section">
+        <div class="section scroll-reveal">
             <div class="card-container">
-                <div class="theory-card scroll-reveal">
+                <div class="theory-card">
                     <h2>01 / 数字公有制</h2>
                     <h3>从《资本论》到 Open Source</h3>
                     <p>
@@ -144,9 +143,9 @@
         </div>
 
         <!-- 3. 深度内容：异化 -->
-        <div class="section">
+        <div class="section scroll-reveal">
             <div class="card-container">
-                <div class="theory-card scroll-reveal" style="align-self: flex-end;">
+                <div class="theory-card">
                     <h2>02 / 算法异化</h2>
                     <h3>数据拜物教 (Data Fetishism)</h3>
                     <p>
@@ -161,8 +160,8 @@
         </div>
 
         <!-- 4. AI 对话 -->
-        <div class="section chat-section">
-            <h2 style="margin-bottom: 20px; color: #fff;">
+        <div class="section chat-section scroll-reveal">
+            <h2 style="margin-bottom: 30px; color: #fff; font-size: 2rem;">
                 <span style="color:var(--primary-red)">//</span> 跨时空连线：Ask Marx
             </h2>
             <div class="chat-container">
@@ -171,7 +170,7 @@
                         <span class="status-dot"></span>
                         <span style="font-weight: bold;">Karl_Marx_v1.0.exe</span>
                     </div>
-                    <div style="font-size: 0.8rem; color: #aaa;">DeepSeek AI Powered</div>
+                    <div style="font-size: 0.8rem; color: #aaa;">System Online</div>
                 </div>
                 <div class="chat-window" id="chat-window">
                     <div class="message ai">
@@ -180,23 +179,28 @@
                     </div>
                 </div>
                 <div class="chat-input-area">
-                    <input type="text" id="user-input" placeholder="输入问题，例如：如何看待996工作制？" autocomplete="off">
+                    <input type="text" id="user-input" placeholder="输入问题，例如：如何看待今天的996？" autocomplete="off">
                     <button onclick="sendMessage()">发送</button>
                 </div>
             </div>
-            <p style="margin-top: 15px; font-size: 0.8rem; color: #666;">
-                *注：已接入 DeepSeek API，请文明提问。
+            <p style="margin-top: 15px; font-size: 0.8rem; color: #666; text-align: center;">
+                *注：已接入 DeepSeek API。如果网络受限，将自动切换至本地思想库。
             </p>
         </div>
     </div>
 
+    <style>
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+    </style>
+
     <!-- JavaScript 代码区 -->
     <script>
         // ============================================
-        // 1. Three.js 粒子特效 (背景)
+        // 1. Three.js 粒子特效 (背景调亮版)
         // ============================================
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x050505, 0.05);
+        // 调低雾的密度，让背景别那么黑
+        scene.fog = new THREE.FogExp2(0x050505, 0.02); 
 
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -204,23 +208,24 @@
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
         const geometry = new THREE.BufferGeometry();
-        const count = 3000;
+        const count = 4000; // 增加粒子数量
         const positions = new Float32Array(count * 3);
         const colors = new Float32Array(count * 3);
 
         for(let i = 0; i < count * 3; i++) {
-            positions[i] = (Math.random() - 0.5) * 20; 
-            colors[i] = Math.random() > 0.8 ? 1 : 0.9; 
+            positions[i] = (Math.random() - 0.5) * 25; 
+            // 颜色更亮一点
+            colors[i] = Math.random() > 0.5 ? 1 : 0.6; 
         }
 
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         const material = new THREE.PointsMaterial({
-            size: 0.05,
+            size: 0.06, // 粒子变大一点点
             vertexColors: true,
             transparent: true,
-            opacity: 0.8,
+            opacity: 0.9,
             blending: THREE.AdditiveBlending
         });
 
@@ -236,8 +241,8 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            particles.rotation.y += 0.002;
-            particles.rotation.x += 0.001;
+            particles.rotation.y += 0.001; // 自动旋转慢一点
+            particles.rotation.x += 0.0005;
             particles.rotation.y += (mouseX - particles.rotation.y) * 0.05;
             particles.rotation.x += (mouseY - particles.rotation.x) * 0.05;
             renderer.render(scene, camera);
@@ -251,7 +256,7 @@
         });
 
         // ============================================
-        // 2. GSAP 动画 & 打字机
+        // 2. GSAP 动画 & 打字机 (优化触发时机)
         // ============================================
         gsap.registerPlugin(ScrollTrigger);
 
@@ -261,20 +266,27 @@
             if (typeIdx < text.length) {
                 document.getElementById("typewriter").innerHTML += text.charAt(typeIdx);
                 typeIdx++;
-                setTimeout(typeWriter, 80);
+                setTimeout(typeWriter, 50); // 打字速度加快
             }
         }
-        setTimeout(typeWriter, 1000);
+        setTimeout(typeWriter, 800);
 
         gsap.utils.toArray('.scroll-reveal').forEach(elem => {
             gsap.from(elem, {
-                y: 100, opacity: 0, duration: 1.5, ease: "power3.out",
-                scrollTrigger: { trigger: elem, start: "top 80%", toggleActions: "play none none reverse" }
+                y: 50, // 移动距离减小
+                opacity: 0, 
+                duration: 1, 
+                ease: "power2.out",
+                scrollTrigger: { 
+                    trigger: elem, 
+                    start: "top 85%", // 只要进入屏幕下方 15% 就开始显示，避免大黑屏
+                    toggleActions: "play none none reverse" 
+                }
             });
         });
 
         // ============================================
-        // 3. AI 对话系统 (定义 sendMessage 函数)
+        // 3. AI 对话系统 (保持你的Key)
         // ============================================
         
         const API_KEY = "sk-67378a51c3634e38a618d01952693fb0"; 
@@ -286,15 +298,12 @@
 
             if (!userText) return;
 
-            // 1. 显示用户消息
             addMessage('user', userText);
             input.value = '';
 
-            // 2. 显示加载状态
-            const loadingId = addMessage('ai', '<span style="opacity:0.7">正在查阅《资本论》...</span>');
+            const loadingId = addMessage('ai', '<span style="opacity:0.7">思考中...</span>');
 
             try {
-                // 发起请求
                 const response = await fetch(API_URL, {
                     method: "POST",
                     headers: {
@@ -315,32 +324,29 @@
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error("DeepSeek Error: " + (errorData.error?.message || response.status));
+                    throw new Error("Network Error");
                 }
 
                 const data = await response.json();
                 const aiReply = data.choices[0].message.content;
-
-                // 3. 成功：更新消息
                 updateMessage(loadingId, aiReply);
 
             } catch (error) {
-                console.error("AI调用失败:", error);
+                console.error("切换至本地模式:", error);
                 
-                // 4. 失败时的备用方案 (兜底)
+                // 本地备用语料库 (当 API 失败时显示这些)
                 const backupResponses = [
                     "历史的辩证法告诉我们，技术应当是解放人类的工具，而非奴役人类的枷锁。",
                     "你的困惑源于生产力与生产关系的冲突。在数字资本主义下，这表现得尤为明显。",
+                    "资本来到世间，从头到脚，每个毛孔都滴着血和肮脏的东西。数字资本也不例外。",
                     "全世界无产者，联合起来！无论是在工厂里，还是在代码仓库里。"
                 ];
                 const randomBackup = backupResponses[Math.floor(Math.random() * backupResponses.length)];
                 
-                updateMessage(loadingId, randomBackup + " <br><span style='font-size:0.7rem;color:#888'>(注: 连接历史回响中...请检查网络控制台)</span>");
+                updateMessage(loadingId, randomBackup + " <br><span style='font-size:0.7rem;color:#888;margin-top:5px;display:block;'>(*网络波动，启用离线思想库)</span>");
             }
         }
 
-        // 辅助函数: 添加消息气泡
         function addMessage(role, htmlContent) {
             const chatWindow = document.getElementById('chat-window');
             const div = document.createElement('div');
@@ -358,7 +364,6 @@
             return div.id;
         }
 
-        // 辅助函数: 更新消息内容
         function updateMessage(id, text) {
             const div = document.getElementById(id);
             if (window.marked) {
@@ -368,7 +373,6 @@
             }
         }
 
-        // 回车发送监听
         document.getElementById('user-input').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') sendMessage();
         });
