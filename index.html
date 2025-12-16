@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我心中的马克思 | 2024级智科作业</title>
     
-    <!-- 引入核心库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
@@ -148,26 +147,58 @@
         <div class="section hero">
             <h1>CYBER <br><span>MARX</span></h1>
             <div class="hero-desc"><p id="typewriter"></p></div>
-            <div style="margin-top: 50px; opacity: 0.6; font-size: 0.9rem;">↓ 向下滚动</div>
+            
+            <div style="margin-top: 40px; display: flex; gap: 20px; align-items: center;">
+                <button onclick="document.querySelector('.chat-section').scrollIntoView({behavior: 'smooth'})" 
+                        style="background: transparent; border: 1px solid var(--primary-red); color: var(--primary-red); padding: 10px 20px; font-family: inherit; cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px rgba(255,42,42,0.2);">
+                    >> 建立跨时空连线
+                </button>
+                <span style="font-size: 0.8rem; color: #666;">// Status: Online</span>
+            </div>
+
+            <div style="margin-top: 50px; opacity: 0.6; font-size: 0.9rem;">↓ 向下滚动探索思想矩阵</div>
         </div>
 
         <div class="section scroll-reveal">
             <div class="theory-card">
                 <h2>01 / 数字公有制</h2>
                 <h3>从《资本论》到 Open Source</h3>
-                <p>在工业时代，马克思批判了<span class="highlight">生产资料的私有制</span>。而在今天的数字世界，代码成为了新的生产资料。<br><br>**开源软件运动 (Open Source)** 是一场未经宣扬的共产主义实践。GitHub 上的开源仓库，实际上构建了一个<span class="highlight">数字公有地 (Digital Commons)</span>，它打破了知识产权对技术的垄断。</p>
+                <p>
+                    在工业时代，马克思批判了<span class="highlight">生产资料的私有制</span>。而在今天的数字世界，代码与算力成为了新的生产资料。
+                    <br><br>
+                    <strong>开源软件运动 (Open Source)</strong> 是一场未经宣扬的共产主义实践。GitHub 上的每一个 Public 仓库，实际上都在构建一个<span class="highlight">数字公有地 (Digital Commons)</span>。在这里，技术不再被专利的高墙围堵，"Copyleft" 取代了 "Copyright"，全球开发者共同维护着人类的<strong>一般智力 (General Intellect)</strong>，打破了资本对技术的垄断。
+                </p>
             </div>
         </div>
 
         <div class="section scroll-reveal">
             <div class="theory-card">
                 <h2>02 / 算法异化</h2>
-                <h3>数据拜物教 (Data Fetishism)</h3>
-                <p>在算法时代，异化更加隐蔽。我们通过点击和浏览创造了数据（数字劳动），但这些数据反过来变成了推荐算法（数字资本）来控制我们的喜好。我们不再是技术的主人，而是<span class="highlight">流量的奴隶</span>。</p>
+                <h3>数字拜物教 (Data Fetishism)</h3>
+                <p>
+                    马克思曾预言工人的劳动产品将作为异己的力量统治工人。在算法时代，这种<span class="highlight">异化 (Alienation)</span> 更加隐蔽且彻底。
+                    <br><br>
+                    我们通过点击、浏览和交互创造了数据（数字劳动），但这些被剥削的<span class="highlight">数据剩余价值</span>，反过来变成了控制我们感官的推荐算法。我们不再是工具的使用者，而是成为了流量的矿藏。算法构筑的<strong>"信息茧房"</strong>，正是现代社会的精神牢笼。
+                </p>
             </div>
         </div>
 
-        <!-- AI Chat 区域 -->
+        <div class="section scroll-reveal">
+            <div class="theory-card">
+                <h2>03 / 幽灵的重构</h2>
+                <h3>历史唯物主义的神经网络</h3>
+                <p>
+                    "一个幽灵，共产主义的幽灵，在欧洲游荡。" —— 1848
+                    <br><br>
+                    今天，这个幽灵在神经网络的权重中苏醒。如果说<strong>历史唯物主义</strong>是分析人类社会的算法，那么 AI 大模型就是训练了整个人类历史文本的<span class="highlight">数字大脑</span>。
+                    <br><br>
+                    我们无法穿越时空，但思想可以超越肉体。通过深度学习，我们提取了十九世纪最伟大的革命意志，让他在二进制的洪流中重生。
+                    <br>
+                    <strong>准备好了吗？他正在等待与你的对话。</strong>
+                </p>
+            </div>
+        </div>
+
         <div class="section scroll-reveal chat-section">
             <h2 style="margin-bottom: 30px; color: #fff; font-size: 2rem;"><span style="color:var(--primary-red)">//</span> 跨时空连线：Ask Marx</h2>
             <div class="chat-container">
@@ -184,7 +215,6 @@
                 </div>
             </div>
             
-            <!-- ✨ 新增：技术展示面板 ✨ -->
             <div class="tech-panel">
                 <div class="tech-item">
                     <span class="tech-label">>> 核心模型:</span>
@@ -196,18 +226,15 @@
                 </div>
                 <div class="tech-item">
                     <span class="tech-label">>> 后端架构:</span>
-                    <span class="tech-value">Vercel Serverless (Node.js)</span>
+                    <span class="tech-value">Serverless (Zeabur/Vercel)</span>
                 </div>
                 <div class="tech-item">
                     <span class="tech-label">>> 跨域方案:</span>
-                    <span class="tech-value">API Proxy Forwarding</span>
+                    <span class="tech-value">Same-Origin Proxy</span>
                 </div>
             </div>
-            <!-- 技术展示面板结束 -->
-            
         </div>
 
-        <!-- 原创成果展示 -->
         <div class="section scroll-reveal" style="min-height: auto;">
             <h2 style="margin-bottom: 30px; color: #fff; font-size: 2rem; border-left: 5px solid var(--gold); padding-left: 20px;">
                 <span style="color:var(--gold)">//</span> 团队原创成果展示
@@ -320,58 +347,18 @@
         const text="哲学家们只是用不同的方式解释世界，问题在于改变世界。";
         let tIdx=0; function typeWriter(){if(tIdx<text.length){document.getElementById("typewriter").innerHTML+=text.charAt(tIdx);tIdx++;setTimeout(typeWriter,50);}}
 
-        // 使用后端代理
-        // const API_KEY=""; const API_URL="/api/chat";
-        // async function sendMessage(){
-        //     const i=document.getElementById('user-input'); const t=i.value.trim(); if(!t)return;
-        //     addMessage('user',t); i.value=''; const l=addMessage('ai','<span style="opacity:0.7">思考中...</span>');
-        //     try{
-        //         const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"deepseek-chat",messages:[{role:"system",content:"你现在是卡尔·马克思..."},{role:"user",content:t}]})});
-        //         if(!r.ok)throw new Error("API Error"); const d=await r.json(); updateMessage(l,d.choices[0].message.content);
-        //     }catch(e){updateMessage(l,"历史的辩证法告诉我们... (离线模式)");}
-        // }
-        async function sendMessage() {
-        const i = document.getElementById('user-input');
-        const t = i.value.trim();
-        if (!t) return;
-
-        addMessage('user', t);
-        i.value = '';
-        const l = addMessage('ai', '<span style="opacity:0.7">思考中...</span>');
-
-        // 这里直接填你的 Key (从你的 api/chat.js 里复制过来的)
-        const YOUR_API_KEY = "sk-67378a51c3634e38a618d01952693fb0"; 
-
-        try {
-            // 直接请求 DeepSeek 官方接口，不再走 /api/chat
-            const response = await fetch("https://api.deepseek.com/chat/completions", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${YOUR_API_KEY}` // 这里的 Bearer 后面有一个空格，别漏了
-                },
-                body: JSON.stringify({
-                    model: "deepseek-chat",
-                    messages: [
-                        { role: "system", content: "你现在是卡尔·马克思，请用唯物辩证法的语气，结合《资本论》和《共产党宣言》的思想回答问题。你的回答应当深刻、严肃但富有革命热情。" },
-                        { role: "user", content: t }
-                    ]
-                })
-            });
-
-            if (!response.ok) {
-                const errData = await response.json();
-                throw new Error(errData.error?.message || "API Error");
-            }
-
-            const data = await response.json();
-            updateMessage(l, data.choices[0].message.content);
-
-        } catch (e) {
-            console.error(e);
-            updateMessage(l, "历史的辩证法告诉我们... (连接 DeepSeek 失败，请检查网络或 Key 余额)");
+        // ✅ 关键点：这里保持你原始的后端代理逻辑，完全没动！
+        // 适配 Zeabur 的 /api/chat 路径
+        const API_KEY=""; const API_URL="/api/chat";
+        async function sendMessage(){
+            const i=document.getElementById('user-input'); const t=i.value.trim(); if(!t)return;
+            addMessage('user',t); i.value=''; const l=addMessage('ai','<span style="opacity:0.7">思考中...</span>');
+            try{
+                // 这里的 fetch 还是发的 /api/chat，由 Zeabur 托管的后端来处理，Key 在后端里。
+                const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"deepseek-chat",messages:[{role:"system",content:"你现在是卡尔·马克思..."},{role:"user",content:t}]})});
+                if(!r.ok)throw new Error("API Error"); const d=await r.json(); updateMessage(l,d.choices[0].message.content);
+            }catch(e){updateMessage(l,"历史的辩证法告诉我们... (离线模式)");}
         }
-    }
         function addMessage(r,h){const w=document.getElementById('chat-window'),d=document.createElement('div');d.className=`message ${r}`;d.id='msg-'+Date.now();d.innerHTML=r==='ai'?`<strong>马克思:</strong> ${h}`:h;w.appendChild(d);w.scrollTop=w.scrollHeight;return d.id;}
         function updateMessage(id,t){document.getElementById(id).innerHTML=`<strong>马克思:</strong> ${window.marked?marked.parseInline(t):t}`;}
         document.getElementById('user-input').addEventListener('keypress',e=>{if(e.key==='Enter')sendMessage();});
