@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project RED: 赛博马克思 | 穿越时空的辩证法</title>
+    <!-- 引入必要的库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <!-- 引入 Markdown 解析库 (用于渲染AI回复) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        :root {
+            --primary-red: #ff2a2a;
+            --gold: #ffd700;
+            --bg-color: #050505;
+            --glass: rgba(20, 20, 20, 0.7);
+        }
+
+        /* 基础样式 */
+        body, html { margin: 0; padding: 0; overflow-x: hidden; background-color: var(--bg-color); color: #e0e0e0; font-family: 'Courier New', 'Segoe UI', sans-serif; }
+        
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-red); border-radius: 4px; }
+
+        /* 导航栏 */
+        nav { position: fixed; top: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-sizing: border-box; mix-blend-mode: difference; }
+        .logo { font-weight: 900; font-size: 1.5rem; color: var(--primary-red); letter-spacing: 2px; text-transform: uppercase; border: 2px solid var(--primary-red); padding: 5px 10px; }
+        
+        /* 3D 背景 */
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; }
+
+        /* 主内容容器 */
+        .content { position: relative; z-index: 10; width: 100%; }
+
+        /* 通用 Section */
+        .section { min-height: 100vh; padding: 0 10%; display: flex; align-items: center; justify-content: center; position: relative; box-sizing: border-box; }
+        
+        /* Hero Section */
+        .hero { flex-direction: column; align-items: flex-start; justify-content: center; height: 100vh; }
+        h1 { font-size: clamp(3rem, 8vw, 6rem); margin: 0; line-height: 1; color: #fff; text-shadow: 0 0 20px rgba(255, 42, 42, 0.5); }
+        h1 span { color: var(--primary-red); }
+        .hero-desc { margin-top: 20px; font-size: 1.2rem; border-left: 4px solid var(--gold); padding-left: 15px; color: #aaa; max-width: 600px; }
+
+        /* 理论卡片 (玻璃拟态) */
+        .card-container { display: flex; flex-direction: column; gap: 50px; width: 100%; }
+        .theory-card { 
+            background: var(--glass); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 42, 42, 0.2); 
+            padding: 40px; 
+            border-radius: 4px; 
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .theory-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+        .theory-card::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--primary-red); }
+        .theory-card h2 { color: var(--gold); margin-top: 0; font-size: 2rem; }
+        .theory-card h3 { color: #fff; margin-bottom: 10px; font-size: 1.2rem; display: flex; align-items: center; }
+        .theory-card h3::before { content: '>'; margin-right: 10px; color: var(--primary-red); }
+        .theory-card p { line-height: 1.8; color: #ccc; font-size: 1rem; text-align: justify; }
+
+        /* 重点高亮 */
+        .highlight { color: var(--primary-red); font-weight: bold; background: rgba(255, 42, 42, 0.1); padding: 0 4px; }
+
+        /* AI 对话界面 */
+        .chat-section { flex-direction: column; justify-content: center; }
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            height: 70vh;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--primary-red);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 30px rgba(255, 42, 42, 0.1);
+            overflow: hidden;
+        }
+        .chat-header {
+            padding: 15px 20px;
+            background: rgba(255, 42, 42, 0.1);
+            border-bottom: 1px solid var(--primary-red);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status-dot { width: 10px; height: 10px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 10px #00ff00; margin-right: 10px; display: inline-block; }
+        
+        .chat-window { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        
+        .message { max-width: 80%; padding: 12px 18px; border-radius: 8px; line-height: 1.5; font-size: 0.95rem; }
+        .message.user { align-self: flex-end; background: rgba(255, 255, 255, 0.1); border: 1px solid #555; color: #fff; }
+        .message.ai { align-self: flex-start; background: rgba(255, 42, 42, 0.15); border: 1px solid var(--primary-red); color: #ffd1d1; }
+        .message.ai strong { color: var(--gold); }
+
+        .chat-input-area { padding: 20px; background: rgba(0,0,0,0.5); display: flex; gap: 10px; border-top: 1px solid #333; }
+        input[type="text"] { flex: 1; background: transparent; border: 1px solid #555; color: #fff; padding: 12px; border-radius: 4px; font-family: inherit; }
+        input[type="text"]:focus { outline: none; border-color: var(--primary-red); }
+        button { background: var(--primary-red); color: #fff; border: none; padding: 0 25px; cursor: pointer; font-weight: bold; text-transform: uppercase; border-radius: 4px; transition: 0.3s; }
+        button:hover { background: #cc0000; box-shadow: 0 0 15px var(--primary-red); }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .section { padding: 0 5%; }
+            .theory-card { padding: 20px; }
+            .message { max-width: 95%; }
+        }
+
+        .code-block { background: #111; padding: 2px 6px; border-radius: 4px; font-family: monospace; color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">RED_PROJECT // 1818-202X</div>
+        <div style="font-size: 0.8rem; opacity: 0.8;">CS x MARXISM</div>
+    </nav>
+
+    <div id="canvas-container"></div>
+
+    <div class="content">
+        <!-- 1. 首页 -->
+        <div class="section hero">
+            <h1>CYBER <br><span>MARX</span></h1>
+            <div class="hero-desc">
+                <p id="typewriter"></p>
+            </div>
+            <div style="margin-top: 50px; opacity: 0.5; font-size: 0.8rem;">
+                ↓ 向下滚动进入思想矩阵
+            </div>
+        </div>
+
+        <!-- 2. 深度内容：开源与共产主义 -->
+        <div class="section">
+            <div class="card-container">
+                <div class="theory-card scroll-reveal">
+                    <h2>01 / 数字公有制</h2>
+                    <h3>从《资本论》到 Open Source</h3>
+                    <p>
+                        在工业时代，马克思批判了<span class="highlight">生产资料的私有制</span>。而在今天的数字世界，代码成为了新的生产资料。
+                        <br><br>
+                        **开源软件运动 (Open Source)** 是一场未经宣扬的共产主义实践。Linux内核的开发模式体现了“各尽所能（开发者贡献代码），按需分配（用户免费使用）”的原则。
+                        GitHub 上的开源仓库，实际上构建了一个<span class="highlight">数字公有地 (Digital Commons)</span>，它打破了知识产权对技术的垄断，让全人类共享智慧的结晶。这是对“私有制阻碍生产力发展”这一论断的最有力回击。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 深度内容：算法异化 -->
+        <div class="section">
+            <div class="card-container">
+                <div class="theory-card scroll-reveal" style="align-self: flex-end;">
+                    <h2>02 / 算法异化</h2>
+                    <h3>数据拜物教 (Data Fetishism)</h3>
+                    <p>
+                        马克思提出了“人的异化”：工人创造了商品，却被商品所奴役。
+                        <br><br>
+                        在算法时代，这种异化更加隐蔽。我们通过点击和浏览创造了数据（数字劳动），但这些数据反过来变成了推荐算法（数字资本）来控制我们的喜好、甚至思想。
+                        <br><br>
+                        当我们沉迷于短视频的信息茧房时，我们不再是技术的主人，而是<span class="highlight">流量的奴隶</span>。马克思主义提醒我们：技术应当服务于人的自由全面发展，而不是将人异化为算法的附庸。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 核心功能：AI 对话 -->
+        <div class="section chat-section">
+            <h2 style="margin-bottom: 20px; color: #fff;">
+                <span style="color:var(--primary-red)">//</span> 跨时空连线：Ask Marx
+            </h2>
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div>
+                        <span class="status-dot"></span>
+                        <span style="font-weight: bold;">Karl_Marx_v1.0.exe</span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #aaa;">Connected via Quantum Uplink</div>
+                </div>
+                <div class="chat-window" id="chat-window">
+                    <div class="message ai">
+                        <strong>马克思:</strong> 
+                        同志你好。我在历史的迷雾中观察着你们的时代。关于异化、资本或是你们所谓的“内卷”，你有什么困惑想与我探讨？
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="user-input" placeholder="输入你的问题，例如：如何看待今天的996？" autocomplete="off">
+                    <button onclick="sendMessage()">发送 / SEND</button>
+                </div>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: #666;">
+                *注：后端模型已接入历史唯物主义语料库
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Three.js 粒子特效 (保留并优化) ---
+        const scene = new THREE.Scene();
+        // 添加一点环境雾，增加深邃感
+        scene.fog = new THREE.FogExp2(0x050505, 0.05);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // 创建复杂的粒子系统
+        const geometry = new THREE.BufferGeometry();
+        const count = 3000;
+        const positions = new Float32Array(count * 3);
+        const colors = new Float32Array(count * 3);
+
+        for(let i = 0; i < count * 3; i++) {
+            positions[i] = (Math.random() - 0.5) * 20; 
+            // 颜色在红色和金色之间随机
+            colors[i] = Math.random() > 0.8 ? 1 : 0.9; // R
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 0.05,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+        camera.position.z = 5;
+
+        // 鼠标交互
+        let mouseX = 0;
+        let mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.0005;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.0005;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particles.rotation.y += 0.002;
+            particles.rotation.x += 0.001;
+            
+            // 简单的鼠标视差
+            particles.rotation.y += (mouseX - particles.rotation.y) * 0.05;
+            particles.rotation.x += (mouseY - particles.rotation.x) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // 窗口自适应
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+
+        // --- 2. GSAP 动画 ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 打字机效果
+        const text = "哲学家们只是用不同的方式解释世界，问题在于改变世界。";
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 80);
+            }
+        }
+        setTimeout(typeWriter, 1000);
+
+        // 滚动显现效果
+        gsap.utils.toArray('.scroll-reveal').forEach(elem => {
+            gsap.from(elem, {
+                y: 100,
+                opacity: 0,
+                duration: 1.5,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: elem,
+                    start: "top 80%", 
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+
+
+        // --- 3. AI 对话系统 (模拟 + 真实接口预留) ---
+        
+        // 模拟语料库（如果不想配API Key，就用这个兜底，演示效果极佳）
+        const mockResponses = [
+            "这是一个深刻的问题。在资本主义生产方式下，**异化**是不可避免的。你感到的焦虑，本质上是你的劳动成果与你自身相剥离的结果。",
+            "你要看到事物的两面性。技术本身是革命性的力量，但在**私有制**的框架下，它变成了压榨剩余价值的新工具。",
+            "历史的车轮滚滚向前，**生产力**的飞跃终将冲破旧有的生产关系。你们这一代计算机人，正掌握着最先进的生产力。",
+            "不要被**商品拜物教**蒙蔽了双眼。真正有价值的不是那个昂贵的Logo，而是凝结在其中的无差别的人类劳动。",
+            "全世界无产者，联合起来！在数字时代，这种联合可能表现为**开源社区**的协作精神。"
+        ];
+
+        // 真实 API 配置 (如果想用真的，请在下方填入 Key)
+        const API_KEY = ""; // ⚠️ 填入你的 DeepSeek 或 OpenAI Key，例如 "sk-xxxx"
+        const API_URL = "https://api.deepseek.com/v1/chat/completions"; // 或者 OpenAI 的地址
+
+        async function sendMessage() {
+            const input = document.getElementById('user-input');
+            const chatWindow = document.getElementById('chat-window');
+            const userText = input.value.trim();
+
+            if (!userText) return;
+
+            // 1. 添加用户消息
+            addMessage('user', userText);
+            input.value = '';
+
+            // 2. 显示“思考中...”
+            const loadingId = addMessage('ai', '<span class="loading">正在查阅《资本论》...</span>');
+
+            try {
+                let aiResponseText = "";
+
+                if (API_KEY === "") {
+                    // === 模式 A: 模拟回复 (无 Key 时使用) ===
+                    // 模拟网络延迟，显得很真实
+                    await new Promise(r => setTimeout(r, 1500)); 
+                    aiResponseText = mockResponses[Math.floor(Math.random() * mockResponses.length)];
+                } else {
+                    // === 模式 B: 真实 AI 调用 (填了 Key 后生效) ===
+                    const response = await fetch(API_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${API_KEY}`
+                        },
+                        body: JSON.stringify({
+                            model: "deepseek-chat", // 根据你的 API 提供商修改
+                            messages: [
+                                {
+                                    role: "system", 
+                                    content: "你现在是卡尔·马克思。请用19世纪哲学家的口吻，结合辩证唯物主义和政治经济学原理，回答关于现代社会（互联网、AI、内卷等）的问题。语调要严肃、充满激情且富有批判性。回答要简短有力，控制在100字以内。" 
+                                },
+                                { role: "user", content: userText }
+                            ]
+                        })
+                    });
+                    const data = await response.json();
+                    aiResponseText = data.choices[0].message.content;
+                }
+
+                // 3. 更新 UI
+                updateMessage(loadingId, aiResponseText);
+
+            } catch (error) {
+                console.error(error);
+                updateMessage(loadingId, "我的思想火花暂时被资本主义的防火墙阻挡了... (网络请求失败)");
+            }
+        }
+
+        function addMessage(role, htmlContent) {
+            const chatWindow = document.getElementById('chat-window');
+            const div = document.createElement('div');
+            div.className = `message ${role}`;
+            div.id = 'msg-' + Date.now();
+            
+            if (role === 'ai') {
+                div.innerHTML = `<strong>马克思:</strong> ${htmlContent}`;
+            } else {
+                div.textContent = htmlContent;
+            }
+            
+            chatWindow.appendChild(div);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            return div.id;
+        }
+
+        function updateMessage(id, text) {
+            const div = document.getElementById(id);
+            // 使用 marked 库简单的渲染 markdown 加粗效果
+            div.innerHTML = `<strong>马克思:</strong> ${marked.parseInline(text)}`;
+        }
+
+        // 回车发送
+        document.getElementById('user-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+    </script>
+</body>
+</html>
